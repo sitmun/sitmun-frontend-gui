@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/sitmun/sitmun-frontend-gui.svg?branch=master)](https://travis-ci.org/sitmun/sitmun-frontend-gui)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.sitmun%3Asitmun-frontend-gui&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.sitmun%3Asitmun-frontend-gui)
+[![Build Status](https://travis-ci.com/sitmun/sitmun-frontend-gui.svg?branch=master)](https://travis-ci.com/sitmun/sitmun-frontend-gui)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.sitmun_sitmun-frontend-gui&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.sitmun_sitmun-frontend-gui)
 
 
 # SITMUN frontend gui

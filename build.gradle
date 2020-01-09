@@ -54,7 +54,7 @@ sonarqube {
   properties {
     property 'sonar.host.url', 'https://sonarcloud.io'
     property 'sonar.organization', 'sitmun'
-    properties["sonar.sources"] = 'projects/sitmun-frontend-gui/src'    
+    properties["sonar.sources"] = 'src'    
   }
 }
 
