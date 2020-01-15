@@ -1,8 +1,8 @@
-import { Resource } from 'angular-hal';
-import { TaskParameter } from 'sitmun-frontend-core';
-import { TaskParameterService } from 'sitmun-frontend-core';
-import { TaskService } from 'sitmun-frontend-core';
-import { Task } from 'sitmun-frontend-core';
+import { Resource } from '@sitmun/frontend-core';
+import { TaskParameter } from '@sitmun/frontend-core';
+import { TaskParameterService } from '@sitmun/frontend-core';
+import { TaskService } from '@sitmun/frontend-core';
+import { Task } from '@sitmun/frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';

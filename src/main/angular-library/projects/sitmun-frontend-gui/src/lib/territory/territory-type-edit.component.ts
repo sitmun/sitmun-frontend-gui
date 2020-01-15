@@ -1,5 +1,5 @@
-import { TerritoryType } from 'sitmun-frontend-core';
-import { TerritoryTypeService } from 'sitmun-frontend-core';
+import { TerritoryType } from '@sitmun/frontend-core';
+import { TerritoryTypeService } from '@sitmun/frontend-core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs-compat';

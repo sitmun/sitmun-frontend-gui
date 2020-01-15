@@ -1,10 +1,10 @@
-import { Resource } from 'angular-hal';
-import { UserPosition } from 'sitmun-frontend-core';
-import { Territory } from 'sitmun-frontend-core';
-import { UserPositionService } from 'sitmun-frontend-core';
-import { TerritoryService } from 'sitmun-frontend-core';
-import { UserService } from 'sitmun-frontend-core';
-import { User } from 'sitmun-frontend-core';
+import { Resource } from '@sitmun/frontend-core';
+import { UserPosition } from '@sitmun/frontend-core';
+import { Territory } from '@sitmun/frontend-core';
+import { UserPositionService } from '@sitmun/frontend-core';
+import { TerritoryService } from '@sitmun/frontend-core';
+import { UserService } from '@sitmun/frontend-core';
+import { User } from '@sitmun/frontend-core';
 import { Component, OnInit, ViewChild, Input , Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs-compat';

@@ -1,5 +1,5 @@
-import { TerritoryType } from 'sitmun-frontend-core';
-import { TerritoryTypeService } from 'sitmun-frontend-core';
+import { TerritoryType } from '@sitmun/frontend-core';
+import { TerritoryTypeService } from '@sitmun/frontend-core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';

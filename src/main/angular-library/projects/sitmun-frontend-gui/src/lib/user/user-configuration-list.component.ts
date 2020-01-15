@@ -1,14 +1,14 @@
-import { Resource } from 'angular-hal';
-import { UserConfiguration } from 'sitmun-frontend-core';
-import { Territory } from 'sitmun-frontend-core';
-import { TerritoryService } from 'sitmun-frontend-core';
-import { Role } from 'sitmun-frontend-core';
-import { RoleService } from 'sitmun-frontend-core';
-import { UserConfigurationService } from 'sitmun-frontend-core';
-import { UserService } from 'sitmun-frontend-core';
-import { User } from 'sitmun-frontend-core';
-import {Principal} from 'sitmun-frontend-core';
-import {LoginService} from 'sitmun-frontend-core';
+import { Resource } from '@sitmun/frontend-core';
+import { UserConfiguration } from '@sitmun/frontend-core';
+import { Territory } from '@sitmun/frontend-core';
+import { TerritoryService } from '@sitmun/frontend-core';
+import { Role } from '@sitmun/frontend-core';
+import { RoleService } from '@sitmun/frontend-core';
+import { UserConfigurationService } from '@sitmun/frontend-core';
+import { UserService } from '@sitmun/frontend-core';
+import { User } from '@sitmun/frontend-core';
+import {Principal} from '@sitmun/frontend-core';
+import {LoginService} from '@sitmun/frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';

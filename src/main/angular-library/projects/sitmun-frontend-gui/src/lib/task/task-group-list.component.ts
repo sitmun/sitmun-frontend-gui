@@ -1,5 +1,5 @@
-import {TaskGroup } from 'sitmun-frontend-core';
-import {TaskGroupService } from 'sitmun-frontend-core';
+import {TaskGroup } from '@sitmun/frontend-core';
+import {TaskGroupService } from '@sitmun/frontend-core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 

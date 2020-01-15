@@ -1,10 +1,10 @@
-import { Resource } from 'angular-hal';
-import { TreeNode } from 'sitmun-frontend-core';
-import { TreeNodeService } from 'sitmun-frontend-core';
-import { TreeService } from 'sitmun-frontend-core';
-import { Tree } from 'sitmun-frontend-core';
-import { CartographyService } from 'sitmun-frontend-core';
-import { Cartography } from 'sitmun-frontend-core';
+import { Resource } from '@sitmun/frontend-core';
+import { TreeNode } from '@sitmun/frontend-core';
+import { TreeNodeService } from '@sitmun/frontend-core';
+import { TreeService } from '@sitmun/frontend-core';
+import { Tree } from '@sitmun/frontend-core';
+import { CartographyService } from '@sitmun/frontend-core';
+import { Cartography } from '@sitmun/frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';

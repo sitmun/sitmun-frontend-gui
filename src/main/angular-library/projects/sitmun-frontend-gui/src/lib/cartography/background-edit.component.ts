@@ -1,8 +1,8 @@
-import {Resource} from 'angular-hal';
-import { Background } from 'sitmun-frontend-core';
-import { BackgroundService } from 'sitmun-frontend-core';
-import { CartographyGroup } from 'sitmun-frontend-core';
-import { CartographyGroupService } from 'sitmun-frontend-core';
+import {Resource} from '@sitmun/frontend-core';
+import { Background } from '@sitmun/frontend-core';
+import { BackgroundService } from '@sitmun/frontend-core';
+import { CartographyGroup } from '@sitmun/frontend-core';
+import { CartographyGroupService } from '@sitmun/frontend-core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs-compat';

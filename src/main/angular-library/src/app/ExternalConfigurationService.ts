@@ -1,4 +1,4 @@
-import { ExternalConfiguration , ExternalConfigurationHandlerInterface } from 'angular-hal';
+import { ExternalConfiguration , ExternalConfigurationHandlerInterface } from '@sitmun/frontend-core';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
@@ -9,7 +9,7 @@ export class ExternalConfigurationService implements ExternalConfigurationHandle
   deserialize() {
     throw new Error('Method not implemented.');
   }
-  
+
   /** deperecated*/
   serialize() {
     throw new Error('Method not implemented.');

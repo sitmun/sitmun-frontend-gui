@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'sitmun-frontend-core';
-import { LoginService } from 'sitmun-frontend-core';
+import { AuthService } from '@sitmun/frontend-core';
+import { LoginService } from '@sitmun/frontend-core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 

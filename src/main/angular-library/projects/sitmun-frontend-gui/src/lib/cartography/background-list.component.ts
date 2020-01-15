@@ -1,7 +1,7 @@
 
-import {Background } from 'sitmun-frontend-core';
-import {CartographyGroup } from 'sitmun-frontend-core';
-import {BackgroundService } from 'sitmun-frontend-core';
+import {Background } from '@sitmun/frontend-core';
+import {CartographyGroup } from '@sitmun/frontend-core';
+import {BackgroundService } from '@sitmun/frontend-core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 

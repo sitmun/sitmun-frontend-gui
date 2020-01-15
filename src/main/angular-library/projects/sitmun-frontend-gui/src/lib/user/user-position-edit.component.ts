@@ -1,10 +1,10 @@
-import { Resource } from 'angular-hal';
-import { Territory } from 'sitmun-frontend-core';
-import { TerritoryService } from 'sitmun-frontend-core';
-import { UserPosition } from 'sitmun-frontend-core';
-import { UserPositionService } from 'sitmun-frontend-core';
-import { UserService } from 'sitmun-frontend-core';
-import { User } from 'sitmun-frontend-core';
+import { Resource } from '@sitmun/frontend-core';
+import { Territory } from '@sitmun/frontend-core';
+import { TerritoryService } from '@sitmun/frontend-core';
+import { UserPosition } from '@sitmun/frontend-core';
+import { UserPositionService } from '@sitmun/frontend-core';
+import { UserService } from '@sitmun/frontend-core';
+import { User } from '@sitmun/frontend-core';
 import { Component, OnInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';

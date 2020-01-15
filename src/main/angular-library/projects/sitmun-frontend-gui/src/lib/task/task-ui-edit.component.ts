@@ -1,5 +1,5 @@
-import { TaskUI } from 'sitmun-frontend-core';
-import { TaskUIService } from 'sitmun-frontend-core';
+import { TaskUI } from '@sitmun/frontend-core';
+import { TaskUIService } from '@sitmun/frontend-core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs-compat';

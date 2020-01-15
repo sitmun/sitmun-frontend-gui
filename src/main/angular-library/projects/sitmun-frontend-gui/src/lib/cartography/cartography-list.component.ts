@@ -1,6 +1,6 @@
-import {Cartography } from 'sitmun-frontend-core';
-import {Service } from 'sitmun-frontend-core';
-import {CartographyService } from 'sitmun-frontend-core';
+import {Cartography } from '@sitmun/frontend-core';
+import {Service } from '@sitmun/frontend-core';
+import {CartographyService } from '@sitmun/frontend-core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 

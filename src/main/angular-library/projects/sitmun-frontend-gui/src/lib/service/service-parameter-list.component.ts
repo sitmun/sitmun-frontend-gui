@@ -1,8 +1,8 @@
-import { Resource } from 'angular-hal';
-import { ServiceParameter } from 'sitmun-frontend-core';
-import { ServiceParameterService } from 'sitmun-frontend-core';
-import { ServiceService } from 'sitmun-frontend-core';
-import { Service } from 'sitmun-frontend-core';
+import { Resource } from '@sitmun/frontend-core';
+import { ServiceParameter } from '@sitmun/frontend-core';
+import { ServiceParameterService } from '@sitmun/frontend-core';
+import { ServiceService } from '@sitmun/frontend-core';
+import { Service } from '@sitmun/frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';

@@ -15,10 +15,10 @@ import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 
 import { ElementRef } from '@angular/core';
 
-import {MapConfigurationManagerService, Layer, LayerConfiguration, LayerGroup, MapOptionsConfiguration, MapComponentStatus} from 'sitmun-frontend-core';
+import {MapConfigurationManagerService, Layer, LayerConfiguration, LayerGroup, MapOptionsConfiguration, MapComponentStatus} from '@sitmun/frontend-core';
 
 import { Observable, of} from 'rxjs';
-import { UserConfigurationService } from 'sitmun-frontend-core';
+import { UserConfigurationService } from '@sitmun/frontend-core';
 
 try {
 	ol.proj.setProj4(proj4);

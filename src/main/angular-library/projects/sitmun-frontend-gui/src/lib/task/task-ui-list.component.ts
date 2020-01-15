@@ -1,5 +1,5 @@
-import {TaskUI } from 'sitmun-frontend-core';
-import {TaskUIService } from 'sitmun-frontend-core';
+import {TaskUI } from '@sitmun/frontend-core';
+import {TaskUIService } from '@sitmun/frontend-core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 

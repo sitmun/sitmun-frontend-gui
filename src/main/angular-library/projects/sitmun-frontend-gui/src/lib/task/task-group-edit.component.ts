@@ -1,5 +1,5 @@
-import { TaskGroup } from 'sitmun-frontend-core';
-import { TaskGroupService } from 'sitmun-frontend-core';
+import { TaskGroup } from '@sitmun/frontend-core';
+import { TaskGroupService } from '@sitmun/frontend-core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs-compat';

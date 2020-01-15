@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AccountService } from 'sitmun-frontend-core';
-import {User } from 'sitmun-frontend-core';
+import {AccountService } from '@sitmun/frontend-core';
+import {User } from '@sitmun/frontend-core';
 
 /**
  * Account data edit component

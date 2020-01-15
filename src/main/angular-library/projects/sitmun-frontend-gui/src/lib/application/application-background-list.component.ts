@@ -1,10 +1,10 @@
-import { Resource } from 'angular-hal';
-import { ApplicationBackground } from 'sitmun-frontend-core';
-import { ApplicationBackgroundService } from 'sitmun-frontend-core';
-import { ApplicationService } from 'sitmun-frontend-core';
-import { Application } from 'sitmun-frontend-core';
-import { Background } from 'sitmun-frontend-core';
-import { BackgroundService } from 'sitmun-frontend-core';
+import { Resource } from '@sitmun/frontend-core';
+import { ApplicationBackground } from '@sitmun/frontend-core';
+import { ApplicationBackgroundService } from '@sitmun/frontend-core';
+import { ApplicationService } from '@sitmun/frontend-core';
+import { Application } from '@sitmun/frontend-core';
+import { Background } from '@sitmun/frontend-core';
+import { BackgroundService } from '@sitmun/frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';

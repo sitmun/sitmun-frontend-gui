@@ -1,5 +1,5 @@
-import {Tree } from 'sitmun-frontend-core';
-import {TreeService } from 'sitmun-frontend-core';
+import {Tree } from '@sitmun/frontend-core';
+import {TreeService } from '@sitmun/frontend-core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 

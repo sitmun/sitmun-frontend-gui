@@ -1,12 +1,12 @@
-import { Resource } from 'angular-hal';
-import { TaskAvailability } from 'sitmun-frontend-core';
-import { Territory } from 'sitmun-frontend-core';
-import { TerritoryService } from 'sitmun-frontend-core';
-import { TaskAvailabilityService } from 'sitmun-frontend-core';
-import { TaskService } from 'sitmun-frontend-core';
-import { Task } from 'sitmun-frontend-core';
-import {Principal} from 'sitmun-frontend-core';
-import {LoginService} from 'sitmun-frontend-core';
+import { Resource } from '@sitmun/frontend-core';
+import { TaskAvailability } from '@sitmun/frontend-core';
+import { Territory } from '@sitmun/frontend-core';
+import { TerritoryService } from '@sitmun/frontend-core';
+import { TaskAvailabilityService } from '@sitmun/frontend-core';
+import { TaskService } from '@sitmun/frontend-core';
+import { Task } from '@sitmun/frontend-core';
+import {Principal} from '@sitmun/frontend-core';
+import {LoginService} from '@sitmun/frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';

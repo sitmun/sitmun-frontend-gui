@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Principal, LoginService } from 'sitmun-frontend-core';
+import { Principal, LoginService } from '@sitmun/frontend-core';
 
 /** Demo app Home component*/
 @Component({

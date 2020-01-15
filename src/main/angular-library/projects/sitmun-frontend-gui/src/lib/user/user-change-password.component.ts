@@ -1,5 +1,5 @@
-import { User } from 'sitmun-frontend-core';
-import { UserService } from 'sitmun-frontend-core';
+import { User } from '@sitmun/frontend-core';
+import { UserService } from '@sitmun/frontend-core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs-compat';

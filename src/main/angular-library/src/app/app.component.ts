@@ -1,6 +1,6 @@
 import { Component,OnInit  } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {Principal, LoginService} from 'sitmun-frontend-core';
+import {Principal, LoginService} from '@sitmun/frontend-core';
 
 /** Demo app component*/
 @Component({

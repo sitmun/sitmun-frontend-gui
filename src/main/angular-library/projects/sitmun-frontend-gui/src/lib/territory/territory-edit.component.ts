@@ -1,9 +1,9 @@
-import { Resource } from 'angular-hal';
-import { ResourceHelper } from 'angular-hal';
-import { TerritoryType } from 'sitmun-frontend-core';
-import { TerritoryTypeService } from 'sitmun-frontend-core';
-import { Territory } from 'sitmun-frontend-core';
-import {TerritoryService} from 'sitmun-frontend-core';
+import { Resource } from '@sitmun/frontend-core';
+import { ResourceHelper } from '@sitmun/frontend-core';
+import { TerritoryType } from '@sitmun/frontend-core';
+import { TerritoryTypeService } from '@sitmun/frontend-core';
+import { Territory } from '@sitmun/frontend-core';
+import {TerritoryService} from '@sitmun/frontend-core';
 import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';

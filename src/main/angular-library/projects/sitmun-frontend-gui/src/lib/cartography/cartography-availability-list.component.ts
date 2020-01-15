@@ -1,12 +1,12 @@
-import { Resource } from 'angular-hal';
-import { CartographyAvailability } from 'sitmun-frontend-core';
-import { Territory } from 'sitmun-frontend-core';
-import { TerritoryService } from 'sitmun-frontend-core';
-import { CartographyAvailabilityService } from 'sitmun-frontend-core';
-import { CartographyService } from 'sitmun-frontend-core';
-import { Cartography } from 'sitmun-frontend-core';
-import {Principal} from 'sitmun-frontend-core';
-import {LoginService} from 'sitmun-frontend-core';
+import { Resource } from '@sitmun/frontend-core';
+import { CartographyAvailability } from '@sitmun/frontend-core';
+import { Territory } from '@sitmun/frontend-core';
+import { TerritoryService } from '@sitmun/frontend-core';
+import { CartographyAvailabilityService } from '@sitmun/frontend-core';
+import { CartographyService } from '@sitmun/frontend-core';
+import { Cartography } from '@sitmun/frontend-core';
+import {Principal} from '@sitmun/frontend-core';
+import {LoginService} from '@sitmun/frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';

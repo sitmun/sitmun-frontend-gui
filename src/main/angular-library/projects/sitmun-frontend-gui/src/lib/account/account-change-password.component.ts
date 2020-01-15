@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AccountService } from 'sitmun-frontend-core';
+import { AccountService } from '@sitmun/frontend-core';
 import { FormGroup, FormControl, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
 
 

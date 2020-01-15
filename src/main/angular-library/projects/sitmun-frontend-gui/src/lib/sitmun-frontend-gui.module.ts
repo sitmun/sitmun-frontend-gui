@@ -13,7 +13,7 @@ import {  MatPaginatorIntl} from '@angular/material';
 import {TranslateModule, TranslateLoader,TranslateService} from '@ngx-translate/core';
 
 
-import { AngularHalModule } from 'angular-hal';
+import { AngularHalModule } from '@sitmun/frontend-core';
 
 import {TerritoryListComponent} from './territory/territory-list.component';
 import {TerritoryEditComponent} from './territory/territory-edit.component';
@@ -67,7 +67,7 @@ import { ApplicationParameterListComponent,ApplicationParameterEditDialog } from
 import { ApplicationBackgroundListComponent,ApplicationBackgroundEditDialog } from './application/application-background-list.component';
 import { TaskUIEditComponent } from './task/task-ui-edit.component';
 import { TaskUIListComponent } from './task/task-ui-list.component';
-import {SitmunFrontendCoreModule} from 'sitmun-frontend-core';
+import {SitmunFrontendCoreModule} from '@sitmun/frontend-core';
 
 
 /** create Material Design pagination service*/

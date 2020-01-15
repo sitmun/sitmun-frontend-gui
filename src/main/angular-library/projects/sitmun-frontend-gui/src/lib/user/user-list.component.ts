@@ -1,5 +1,5 @@
-import { User } from 'sitmun-frontend-core';
-import { UserService } from 'sitmun-frontend-core';
+import { User } from '@sitmun/frontend-core';
+import { UserService } from '@sitmun/frontend-core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 
