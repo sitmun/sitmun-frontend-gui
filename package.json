@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "publish": "npm publish ./dist/sitmun-frontend-gui",
-    "compodoc": "npx compodoc -p tsconfig.json --output ./docs-build/doc-angular -n 'SITMUN Frontend GUI Angular Library documentation' --includes src/main/angular-library/doc"
+    "compodoc": "npx compodoc -p tsconfig.json --output ./docs-build/doc-frontend-gui -n 'SITMUN Frontend GUI Angular Library documentation'"
   },
   "private": false,
   "dependencies": {
