@@ -10,9 +10,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "publish": "npm publish ./dist/sitmun-frontend-gui",
     "compodoc": "npx compodoc -p tsconfig.json --output ./docs-build/doc-angular -n 'SITMUN Frontend GUI Angular Library documentation' --includes src/main/angular-library/doc"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/common": "~6.1.0",
     "@angular/core": "~6.1.0",
@@ -29,6 +30,7 @@
     "@ngx-translate/http-loader": "~3.0.1",
     "@types/moment": "~2.13.0",
     "@types/openlayers": "~4.6.9",
+    "@sitmun/frontend-core": "0.7.3",
     "core-js": "~2.5.4",
     "moment": "~2.22.2",
     "ol": "~4.6.5",

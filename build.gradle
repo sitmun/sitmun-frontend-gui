@@ -42,12 +42,12 @@ repositories {
 // in different places of this script
 ext {
   sitmunlibs = [:]
-  sitmunlibs.sitmuncore = [
+  /*sitmunlibs.sitmuncore = [
     gitrepo   : 'https://github.com/sitmun/sitmun-frontend-core.git',
     groupId   : 'org.sitmun',
     artifactId: 'sitmun-frontend-core',
     version   : 'master'
-  ]  
+  ]*/ 
 }
 
 sonarqube {
@@ -140,6 +140,12 @@ npmBuildSitmunFrontendGUI.mustRunAfter installModules
 npmBuildAngularLibrary.mustRunAfter installModules
 
 task install dependsOn{npmBuildSitmunFrontendGUI}
+
+task npmPublish(type: NpmTask, dependsOn: ['npmBuildAngularLibrary', 'npmInstall']) {
+  description = 'Publish @sitmun/frontend-gui to GitHub packages registry'
+  args = ['run-script', 'publish']
+}
+
 
 clean {
   delete "node_modules"

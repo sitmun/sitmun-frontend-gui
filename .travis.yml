@@ -27,7 +27,15 @@ cache:
     - .gradle
     - node_modules
 
-# Safelist
+deploy:
+  provider: script
+  script: bash ./build-scripts/deploy.sh
+  on:
+    tags: true
+
+# Safelist. The regular expression allows for tagged commits that match it to be built
 branches:
   only:
-  - master
+    - master
+    - /^\d+\.\d+(\.\d+)?(-\S*)?$/
+
