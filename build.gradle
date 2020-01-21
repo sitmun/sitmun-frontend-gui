@@ -3,10 +3,6 @@ buildscript {
     jcenter()
     mavenCentral()
     maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
-    //mavenLocal()
-  }
-  dependencies {    
-    //classpath "org.ajoberstar:gradle-git:1.5.1"
   }
 }
 
@@ -16,39 +12,19 @@ plugins {
   id "com.moowork.node" version "1.2.0"
 }
 
-apply plugin: 'base' // Requirede by the clean task if no other plugin that extends it exists (e.g. the Java plugin)
+apply plugin: 'base' // Required by the clean task if no other plugin that extends it exists (e.g. the Java plugin)
 apply plugin: 'com.moowork.node'
 apply plugin: 'idea'
 apply plugin: 'org.ajoberstar.grgit'
-//apply plugin: 'org.ajoberstar.github-pages'
 apply plugin: 'checkstyle'
 
 
-
-group = 'org.sitmun'
-if (project.hasProperty("customVersion")) {
-  version = project.customVersion
-} else {
-  version = "${sitmun_version}"
-}
 
 repositories {
   mavenLocal()
   mavenCentral()
 }
 
-
-// Dependencies to other SITMUN plugins must be declared all here to facilitate using them
-// in different places of this script
-ext {
-  sitmunlibs = [:]
-  /*sitmunlibs.sitmuncore = [
-    gitrepo   : 'https://github.com/sitmun/sitmun-frontend-core.git',
-    groupId   : 'org.sitmun',
-    artifactId: 'sitmun-frontend-core',
-    version   : 'master'
-  ]*/ 
-}
 
 sonarqube {
   properties {
@@ -59,68 +35,9 @@ sonarqube {
 }
 
 
-def cloneDir = file("$buildDir/plugins-src")
-
-task clonePlugins {
-  description = 'Clone SITMUN plugins from GitHub.'
-  doLast {
-    if (!cloneDir.exists()) {
-      mkdir cloneDir
-    }
-    sitmunlibs.each { k, v ->
-      def targetDir = file("$cloneDir/${v.artifactId}")
-      if (!targetDir.exists()) {
-        grgit.clone {
-          dir = targetDir
-          uri = "${v.gitrepo}"
-          refToCheckout = "${v.version}"
-        }
-      }
-    }
-  }
-}
-
-clonePlugins.mustRunAfter clean
-
-task installPlugins(dependsOn: clonePlugins) {
-  description = 'Install Plugins.'
-  doLast {
-    // It creates a temporary GradleBuild task for each sitmun dependency in sitmunlibs
-    // and runs the specified tasks for each
-    sitmunlibs.each { k,v ->
-      def targetDir = file("$cloneDir/${v.artifactId}/dist")
-      if (!targetDir.exists()) {
-        def tempTask = tasks.create(name: "install_module_${v.artifactId}", type: GradleBuild)
-        tempTask.dir = file("$cloneDir/${v.artifactId}")
-        tempTask.startParameter.projectProperties["customVersion"] = v.version
-        tempTask.tasks = [ "install" ]
-        tempTask.execute()
-      }
-    }
-  }
-}
-
-installPlugins.mustRunAfter clonePlugins
-
-task installModules(dependsOn: [installPlugins, npmInstall]) {
-  doLast {
-    sitmunlibs.values().each {
-      def sourceDir = "$cloneDir/${it.artifactId}/dist" 
-      ant.copy(todir: "node_modules") {
-        fileset(dir: sourceDir)
-      } 
-    }
-  }
-}
-
-installModules.mustRunAfter installPlugins
-installModules.mustRunAfter npmInstall
-
-
-
 def cacheDir = project.hasProperty("cacheDir")? project.properties.cacheDir : "${project.buildDir}" 
 
-task npmBuildSitmunFrontendGUI(type: NpmTask, dependsOn: ['npmInstall', 'installModules']) {
+task npmBuildSitmunFrontendGUI(type: NpmTask, dependsOn: ['npmInstall']) {
     description = 'Build module sitmun-frontend-gui.'
     args = ['run-script', 'build-sitmun-frontend-gui']
 }
@@ -135,9 +52,6 @@ task npmCreateCompodocs(type: NpmTask, dependsOn: ['npmBuildSitmunFrontendGUI', 
   description = 'Create compodocs por sitmun-frontend-gui.'
   args = ['run-script', 'compodoc']
 }
-
-npmBuildSitmunFrontendGUI.mustRunAfter installModules
-npmBuildAngularLibrary.mustRunAfter installModules
 
 task install dependsOn{npmBuildSitmunFrontendGUI}
 
