@@ -135,6 +135,7 @@ export class ApplicationParameterEditDialog implements OnInit {
 
   /** save application parameter*/
   save() {
+      delete this.applicationParameter.application.name;
       this.applicationParameterService.save(this.applicationParameter).subscribe(result => {
       this.dialogRef.close();
       }, error => console.error(error));
