@@ -1,6 +1,6 @@
 {
   "name": "@sitmun/frontend-gui",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "repository": "git://github.com/sitmun/sitmun-frontend-gui.git",
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",

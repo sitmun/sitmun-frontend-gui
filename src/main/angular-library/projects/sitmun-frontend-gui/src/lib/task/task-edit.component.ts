@@ -279,16 +279,16 @@ export class TaskEditComponent implements OnInit, OnDestroy {
             );
 
             if (this.task.type._links!=null && this.task.type._links.self.href!=''){
-                update = concat(update,this.task.addRelation('type', this.task.type));
+                update = concat(update,this.task.substituteRelation('type', this.task.type));
             }
             if (this.task.ui._links!=null && this.task.ui._links.self.href!=''){
-                update = concat(update,this.task.addRelation('ui', this.task.ui));
+                update = concat(update,this.task.substituteRelation('ui', this.task.ui));
             }
             if (this.task.connection._links!=null && this.task.connection._links.self.href!=''){
-                update = concat(update, this.task.addRelation('connection', this.task.connection));
+                update = concat(update, this.task.substituteRelation('connection', this.task.connection));
             }
             if (this.task.group._links!=null && this.task.group._links.self.href!=''){
-                update = concat(update,this.task.addRelation('group', this.task.group));
+                update = concat(update,this.task.substituteRelation('group', this.task.group));
             }
 
             update.subscribe(result => {
