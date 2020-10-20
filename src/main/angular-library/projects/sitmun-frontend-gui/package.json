@@ -1,0 +1,30 @@
+{
+  "name": "@sitmun/frontend-gui",
+  "version": "0.7.1",
+  "repository": "git://github.com/sitmun/sitmun-frontend-gui.git",
+  "peerDependencies": {
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/animations": "^6.0.2",
+    "@angular/cdk": "^6.1.0",
+    "@angular/forms": "^6.0.2",
+    "@angular/http": "^6.0.2",
+    "@angular/material": "^6.1.0",
+    "@angular/platform-browser": "^6.0.2",
+    "@angular/platform-browser-dynamic": "^6.0.2",
+    "@angular/router": "^6.0.2",
+    "@sitmun/frontend-core": "0.7.3",
+    "core-js": "^2.5.4",
+    "rxjs": "^6.1.0",
+    "rxjs-compat": "^6.1.0",
+    "zone.js": "^0.8.26"
+  },
+  "dependencies": {
+    "@types/openlayers": "^4.6.9",
+    "ol": "^4.6.5",
+    "openlayers": "^4.6.5",
+    "proj4": "^2.4.4",
+    "@types/moment": "^2.13.0",
+    "moment": "^2.22.2"
+  }
+}

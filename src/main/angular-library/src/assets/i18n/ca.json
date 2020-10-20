@@ -1,0 +1,108 @@
+{
+   "true":"Si",
+   "false":"No",
+    "application":{"name":"Administració - Diputació Barcelona"},
+   "mat-paginator-intl":{
+    	"first_page":"Primera pàgina",
+    	"items_per_page":"elements per pàgina",
+    	"last_page":"Darrera pàgina",
+    	"next_page":"Pàgina següent",
+    	"of":"de",
+		"previous_page":"Pàgina prèvia"},
+   "menu":{
+    	"territories":"Territoris",
+    	"territoryTypes":"Tipus de territori",
+    	"users":"Usuaris",
+    	"roles":"Gestió de Rols",
+        "territoryManagement":"Gestió de Territoris",
+        "userManagement":"Gestió d'Usuaris"
+	},
+	"global":{
+		"actions":"Accions",
+		"add":"Crear",
+		"edit":"Edita",
+		"delete":"Eliminar",
+		"save":"Desa",
+		"cancel":"Cancel",
+		"back":"Cancel"
+	},
+	"territory":{
+		"item":"Territori",
+		"data":"Dades",
+		"list":"Territoris",
+		"name":"Nom",
+		"scope":"Abast",
+		"type":"Tipus",
+		"blocked":"Bloquejat",
+		"ext":"Extensió",
+		"createdDate":"Data creada",
+		"organizationName":"Nom d'organització",
+		"address":"Direcció",
+		"email":"Email",
+		"logo":"Logo",
+		"members":"Membres",
+		"comments":"Comentaris"
+	},
+	"territoryType":{
+		"item":"Tipus de territori",
+		"list":"Tipus de territori",
+		"name":"Nom",
+		"comments":"Comentaris"
+	},
+	"role":{
+		"item":"Rol",
+		"data":"Dades",
+		"list":"Rols",
+		"name":"Nom",
+		"comments":"Comentaris"
+	},
+	"user":{
+		"item":"Usuari",
+		"data":"Dades",
+		"list":"Usuaris",
+		"username":"Username",
+		"password":"Password",
+		"administrator":"Administrador",
+		"blocked":"Bloquejat",
+		"firstName":"Nom",
+		"lastName":"Cognom",
+		"positions":"Càrrecs",
+		"permissions":"Permisos"
+	},
+	"userPosition":{
+		"item":"Càrrec",
+		"list":"Càrrecs",
+		"territory":"Territori",
+		"name":"Nom",
+		"email":"Email",
+		"organization":"Organització"
+	},
+	"userConfiguration":{
+		"item":"Permís",
+		"list":"Permisos",
+		"territory":"Territoris",
+		"role":"Rol"
+	},
+    "SELECT_BASE_LAYER_DIALOG_TITLE": "Seleccioneu la capa base",
+    "MAP_BASE_LAYER_OPTION": "Mapa",
+    "AERIAL_BASE_LAYER_OPTION": "Aèrea",
+    "HYBRID_BASE_LAYER_OPTION": "Híbrida",
+    "OK_BUTTON": "CONFIRMAR",
+	"CANCEL_BUTTON": "CANCEL·LAR",
+    "CLOSE_BUTTON": "TANCAR",
+    "ZOOM_IN_TOOLTIP": "Apropar zoom",
+	"ZOOM_OUT_TOOLTIP": "Allunyar zoom",
+	"LOCATION_TOOLTIP": "Localitzar l'usuari",
+	"BASE_LAYER_SELECTOR_TOOLTIP": "Selector de capa base",
+	"LENGTH_MEASUREMENT_TOOLTIP": "Mesura de longitud",
+	"AREA_MEASUREMENT_TOOLTIP": "Mesura d'àrea",
+	"CONTINUE_LINE_MSG": "Feu clic per continuar dibuixant la línia",
+	"CONTINUE_POLYGON_MSG": "Feu clic per continuar dibuixant el polígon",
+	"ATTRIBUTIONS_TOOLTIP": "Atribucions",
+	"OVERVIEW_MAP_TOOLTIP": "Mapa de situació",
+	"SCALE_BAR_TOOLTIP": "Escala 1:",
+	"GET_FEATURE_INFO_TOOLTIP": "Informació d'un servei",
+	"FEATURE_INFO_DIALOG_TITLE": "Informació",
+	"FEATURE_INFO_NO_DATA": "No hi ha dades disponibles",
+	"FEATURE_INFO_VIEW_MORE": "Veure més"
+}
