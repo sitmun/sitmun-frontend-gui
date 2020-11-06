@@ -1,0 +1,30 @@
+<div class="container" style="margin: 50px;">
+
+
+    
+    <!-- <button class="btn btn-primary" (click)="removeElement()" > borrar </button> -->
+
+    <div class="row">
+        <div class="col-12 text-left" >
+            <label>Search </label>
+            <input type="text" placeholder="" (keyup)="quickSearch()" [(ngModel)]="searchValue" ml-2 >
+            
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="ag-theme-balham col-12" id="myGrid">
+            <ag-grid-angular
+            style=" width: 750px; height: 750px;"
+            class="ag-theme-balham"
+            [rowData]="rowData"
+            [columnDefs]="columnDefs"
+            [animateRows]="true"
+            [pagination]="false"
+            [modules]="modules"
+            (gridReady)="onGridReady($event)">
+            </ag-grid-angular>
+        </div>
+    </div>
+</div>
+
