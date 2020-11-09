@@ -24,33 +24,14 @@ export class DataGridComponent implements OnInit {
   @Input() columnDefs: any[];
   rowData: any[];
   @Input() getAll: () => Observable<any>;
-  // @Input() removeFunction: (item: any) => Observable<any>;
+
+  @Output() remove: EventEmitter<any[]>;
+  @Output() new: EventEmitter<boolean>;
 
 
   constructor() {
-   let gridOptions = {
-      defaultColDef: {
-        editable: true,
-        enableRowGroup: true,
-        enablePivot: true,
-        enableValue: true,
-        sortable: true,
-        resizable: true,
-        flex: 1,
-        minWidth: 100,
-      },
-      suppressRowClickSelection: true,
-      groupSelectsChildren: true,
-      debug: true,
-      rowSelection: 'multiple',
-      rowGroupPanelShow: 'always',
-      pivotPanelShow: 'always',
-      pagination: false,
-      enableRangeSelection: true,
-    };
-
-  
-
+    this.remove = new EventEmitter();
+    this.new = new EventEmitter();
   }
 
   ngOnInit() {
@@ -60,8 +41,8 @@ export class DataGridComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     this.gridApi.rowHeight = 100;
-    // this.gridApi.setRowData(this.getAll);
     this.getElements();
+    params.api.sizeColumnsToFit();
 
   }
 
@@ -80,14 +61,17 @@ export class DataGridComponent implements OnInit {
     });
   }
 
+  removeData() {
+    let selectedNodes = this.gridApi.getSelectedNodes();
+  	let selectedData = selectedNodes.map(node => node.data);
+    console.log(selectedData);
+    this.remove.emit(selectedData);
+}
 
-  // removeElement()
-  // {
-  //   this.removeFunction(this.rowData[0])
-  //   .subscribe((data) => {
-  //     console.log(data);
-  //   } )
-  //   // this.getElements();
-    
-  // }
+  newData()
+  {
+    this.new.emit(true);
+  }
+
+
 }

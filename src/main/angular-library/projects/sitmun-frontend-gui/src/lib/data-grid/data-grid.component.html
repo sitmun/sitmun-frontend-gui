@@ -3,7 +3,8 @@
 
     
     <!-- <button class="btn btn-primary" (click)="removeElement()" > borrar </button> -->
-
+    <button (click)="removeData()">Remove</button>
+    <button (click)="newData()">New</button>
     <div class="row">
         <div class="col-12 text-left" >
             <label>Search </label>
@@ -17,11 +18,13 @@
             <ag-grid-angular
             style=" width: 750px; height: 750px;"
             class="ag-theme-balham"
+            [floatingFilter]="true"
             [rowData]="rowData"
             [columnDefs]="columnDefs"
             [animateRows]="true"
             [pagination]="false"
-            [modules]="modules"
+            [modules]="modules"            
+            rowSelection="multiple"
             (gridReady)="onGridReady($event)">
             </ag-grid-angular>
         </div>
