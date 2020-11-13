@@ -15,8 +15,9 @@ import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { AgGridModule } from '@ag-grid-community/angular';
-
-
+import { MatButtonModule } from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 
 registerLocaleData(localeCa, 'ca');
@@ -42,6 +43,7 @@ const appRoutes: Routes = [
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         SitmunFrontendCoreModule.forRoot(),
         SitmunFrontendGuiModule,
         AgGridModule.withComponents([]),
@@ -52,6 +54,8 @@ const appRoutes: Routes = [
                 deps: [HttpClient]
             }
         }),
+        MatButtonModule,
+        MatIconModule,
 
 
         AngularHalModule.forRoot(),

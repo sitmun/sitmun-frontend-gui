@@ -18,6 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {SitmunFrontendCoreModule} from '@sitmun/frontend-core';
 import { DataGridComponent } from './data-grid/data-grid.component';
 import { AgGridModule } from '@ag-grid-community/angular';
+import { MatButtonModule } from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 
 
@@ -35,6 +37,8 @@ import { AgGridModule } from '@ag-grid-community/angular';
     BrowserAnimationsModule,
     AgGridModule.withComponents([]),
     SitmunFrontendCoreModule,
+    MatButtonModule,
+    MatIconModule,
  
   ],
   declarations: [
