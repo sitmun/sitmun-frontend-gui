@@ -28,16 +28,30 @@ label, input {
 
 #redo{
 
-     background: #FF9300;
-     margin-left: 3px
- 
+    background: #FF9300;
+    margin-left: 3px
+
+}
+
+#redo[disabled]{
+
+   background: #FFC97F;
+   margin-left: 3px
+
 }
 
 #undo{
 
-     background: #FF9300;
-     margin-left: 3px
-    
+    background: #FF9300;
+    margin-left: 3px
+   
+}
+
+#undo[disabled]{
+
+    background: #FFC97F;
+    margin-left: 3px
+   
 }
 
 #borrarCanvis{

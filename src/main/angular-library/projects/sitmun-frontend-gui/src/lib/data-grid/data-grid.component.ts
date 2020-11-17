@@ -14,10 +14,12 @@ export class DataGridComponent {
  
 
 
+
   modules: Module[] = AllCommunityModules;
   searchValue: string;
   private gridApi;
   private gridColumnApi;
+  columnaEstat = false;
   map: Map<number, number> = new Map<number, number>(); // Guardarem l'id de les celes modificades i el nº d'edicions sobre aquestes
   private params; // Params del grid a l'última modificacio (per si fem apply changes)
   rowData: any[];
@@ -27,6 +29,16 @@ export class DataGridComponent {
   gridOptions;
   @Input() columnDefs: any[];
   @Input() getAll: () => Observable<any>;
+  @Input() botoDescartarCanvis: boolean;
+  @Input() botoUndo: boolean;
+  @Input() botoRedo: boolean;
+  @Input() botoAplicarCanvis: boolean;
+  @Input() botoElimina: boolean;
+  @Input() botoNou: boolean;
+  @Input() searchGeneral: boolean;
+
+
+
   @Output() remove: EventEmitter<any[]>;
   @Output() new: EventEmitter<boolean>;
   @Output() sendChanges: EventEmitter<any[]>;
@@ -45,10 +57,10 @@ export class DataGridComponent {
         flex: 1,
         filter: true,
         editable: true,
-        minWidth: 100,
         cellStyle: {backgroundColor: '#FFFFFF'},
       },
       rowSelection: 'multiple',
+      // suppressHorizontalScroll: true,
 
     };
 
@@ -60,10 +72,15 @@ export class DataGridComponent {
     this.params = params;
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-    this.gridApi.rowHeight = 100;
     this.getElements();
     this.gridApi.sizeColumnsToFit();
-
+    for (const col of this.columnDefs) {
+      if (col.field === 'estat') {
+        this.columnaEstat = true;
+      }
+    }
+ 
+   
 
   }
 
@@ -77,20 +94,33 @@ export class DataGridComponent {
     .subscribe((items) => {
         console.log(items);
         this.rowData = items;
+        setTimeout(()=>{this.gridApi.sizeColumnsToFit()}, 30);
     });
   }
 
   removeData(): void {
     this.gridApi.stopEditing(false);
     const selectedNodes = this.gridApi.getSelectedNodes();
-  	 const selectedData = selectedNodes.map(node => node.data);
-    console.log(selectedData);
+    const selectedData = selectedNodes.map(node => node.data);
     this.remove.emit(selectedData);
+
+    if(this.columnaEstat)
+    {
+      const selectedRows = selectedNodes.map(node => node.rowIndex);
+
+      for (const id of selectedRows){
+          this.gridApi.getRowNode(id).data.estat ='Eliminat';
+        }
+      this.gridOptions.api.refreshCells();
+    }
   }
+
+
+
+
 
   newData(): void
   {
-    console.log(this.comptadorCanvis);
     this.gridApi.stopEditing(false);
     this.new.emit(true);
   }
@@ -116,7 +146,6 @@ export class DataGridComponent {
 
   deleteChanges(): void
   {
-    console.log(this.comptadorCanvis);
     for (let i = 0; i < this.comptadorCanvis; i++)
     {
       this.gridApi.undoCellEditing();
@@ -129,6 +158,10 @@ export class DataGridComponent {
     this.gridApi.redrawRows();
   }
 
+
+  onFilterModified(): void{
+    this.deleteChanges();
+  }
 
 
   undo(): void {
@@ -152,8 +185,6 @@ export class DataGridComponent {
     this.comptadorRedo = 0;
     this.onCellValueChanged(e);
   }
-
-
 
 
   onCellValueChanged(params): void{
@@ -201,6 +232,4 @@ export class DataGridComponent {
         this.comptadorCanvisAnterior--;  // Com veniem d'undo, hem de decrementar el comptador de canvisAnterior
       }
     }
-
-
 }
