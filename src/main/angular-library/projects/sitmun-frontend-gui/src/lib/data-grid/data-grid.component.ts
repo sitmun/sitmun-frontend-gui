@@ -26,6 +26,7 @@ export class DataGridComponent {
   comptadorCanvis: number; // Numero de ediciones hechas sobre las celas
   comptadorCanvisAnterior: number; //  Numero de ediciones que habia antes de hacer la ultima modificacion (comptadorCanvis)
   comptadorRedo: number; // Numero de redo que podemos hacer
+  canviAmbModificacions = false;
   gridOptions;
   @Input() columnDefs: any[];
   @Input() getAll: () => Observable<any>;
@@ -113,6 +114,7 @@ export class DataGridComponent {
         }
       this.gridOptions.api.refreshCells();
     }
+    this.gridOptions.api.deselectAll();
   }
 
 
@@ -181,55 +183,82 @@ export class DataGridComponent {
 
   onCellEditingStopped(e)
   {
-    this.comptadorCanvis++;
-    this.comptadorRedo = 0;
-    this.onCellValueChanged(e);
+      if (this.canviAmbModificacions)
+      {
+        this.comptadorCanvis++;
+        this.comptadorRedo = 0;
+        this.onCellValueChanged(e);
+        this.canviAmbModificacions = false;
+      }
   }
 
 
+
   onCellValueChanged(params): void{
-    this.params = params; // Guardaremos los parametros actuales por si luego hay que hacer un applyChanges
+    this.params = params; // Guardaremos los parametros por si hay que hacer un apply changes
 
     if (this.comptadorCanvis > this.comptadorCanvisAnterior)
-      //Esta condición será cierta si hemos editado o hecho un redo, pero no si hemos hecho un undo
-
+      // Esta condición será cierta si venimos de editar la cela o de hacer un redo
       {
-        if (! this.map.has(params.node.id)) //Si no hemos editado la cela anteriormente, la añadimos al map i canviamos el background a verde
+        if (! this.map.has(params.node.id)) // Si no habiamos editado la cela con anterioridad, la añadimos al map y la pintamos de verde
         {
           this.map.set(params.node.id, 1);
         }
         else{
-           // Si ya la habíamos modificado, sumamos 1 al numero de modificaciones en el map
+           // Si ya habíamos modificado la cela, aumentamos el numero de cambios en esta
           const modificacionsActuals = this.map.get(params.node.id);
           this.map.set(params.node.id, (modificacionsActuals + 1));
         }
-        const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex); // Com hemos modificado la linia, la pintamos de verde
+        const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex); // Com ha estado modificada la linia, la pintamos de verde
         params.colDef.cellStyle = {backgroundColor: '#E8F1DE'};
         this.gridApi.redrawRows({rowNodes: [row]});
-        params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; // Volveremos a definir el background blanco para futuras modificaciones de la tabla (ej: filtro)
+        params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; // Definiremos el cellStyle blanco para futuras modificaciones internas (ej: filtro)
         this.comptadorCanvisAnterior++;
 
       }
-    if (this.comptadorCanvis < this.comptadorCanvisAnterior){ // Entrará aquí si hemos hecho un undo
-        // Como venimos de undo, sabemos que la cela ya estaba modificada
+    else if (this.comptadorCanvis < this.comptadorCanvisAnterior){ // Entrará aquí si hemos hecho un undo
+        
         const modificacionsActuals = this.map.get(params.node.id);
-
+        
         if (modificacionsActuals === 1) {
-          // Si solo tiene una modificación, quiere decir que la hemos dejado en su estado inicial, por lo que la pintaremos de blanco y la borraremos del map
+          // Si solo tiene una modificacion, quiere decir que la cela está en su estado inicial, por lo que la pintamos de blanco
           this.map.delete(params.node.id);
           const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex);
-          params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; 
+          params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; // Li posarem un altre cop el background blanc
           this.gridApi.redrawRows({rowNodes: [row]});
         }
-        else // La cela aun no está en su estado inicial, así que le restamos una modificacion en el map
-        {
+        else if (modificacionsActuals >1) // La cela aún no está en su estado inicial, por lo que segguirá verde
+        {                                 // No podemos hacer else por si hacemos un undo de una cela sin cambios
           this.map.set(params.node.id, (modificacionsActuals - 1));
-          const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex); // Como aun tiene modificaciones, el background verde
+          const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex); // Como aun tiene cambios, el background tiene que seguir verde
           params.colDef.cellStyle = {backgroundColor: '#E8F1DE'};
           this.gridApi.redrawRows({rowNodes: [row]});
-          params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; // Volveremos a definir el background blanco para futuras modificaciones de la tabla (ej: filtro)
+          params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; // Definirem el cellStyle blanc per proximes celes
         }
-        this.comptadorCanvisAnterior--; // Como venimos de undo, hay que decrementar el contador de canvios anterior
-      }
+        this.comptadorCanvisAnterior--;  // Com veniem d'undo, hem de decrementar el comptador de canvisAnterior
     }
+    else{
+      console.log(params);
+      if(params.oldValue !== params.value && !(params.oldValue == null && params.value === '') )
+      {
+        this.canviAmbModificacions = true;
+      }
+      else{
+        if ( this.map.has(params.node.id))
+        {
+          const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex); // Com encara te modificacions, ha de tenir el background verd
+          params.colDef.cellStyle = {backgroundColor: '#E8F1DE'};
+          this.gridApi.redrawRows({rowNodes: [row]});
+          params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; // Definiremos el cellStyle blanco para futuras modificaciones internas (ej: filtro)
+
+        }
+        else {
+          this.comptadorCanvisAnterior++; // Como al hacer undo volverá a entrar a esta misma función, hay que enviarlo a su if correspondiente
+          this.gridApi.undoCellEditing(); //Undo para deshacer el cambio sin modificaciones internamente
+        }
+
+      }
+
+    }
+  }
 }
