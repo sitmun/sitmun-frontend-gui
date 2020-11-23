@@ -2,8 +2,8 @@
 
 
     <div id=grup1 >
-        <button  mat-mini-fab *ngIf="botoDescartarCanvis"  id="borrarCanvis" type="button"  (click)="deleteChanges()" [disabled]="comptadorCanvis <= 0">
-            <mat-icon fontSet="material-icons-round" > close </mat-icon>
+        <button  mat-mini-fab  *ngIf="botoDescartarCanvis"  id="borrarCanvis" type="button"  (click)="deleteChanges()" [disabled]="comptadorCanvis <= 0">
+            <mat-icon  fontSet="material-icons-round" > close </mat-icon>
         </button>
         <button mat-mini-fab *ngIf="botoUndo"  id="undo"  (click)="undo()" [disabled]="comptadorCanvis <= 0" >
             <mat-icon fontSet="material-icons-round" > undo </mat-icon>
@@ -17,15 +17,16 @@
     </div>
 
     <div id=grup2 >
-        <label *ngIf="searchGeneral" >Search </label>
+        <label *ngIf="searchGeneral" [translate]="'Search'"> </label>
         <input *ngIf="searchGeneral"type="text" placeholder="" (keyup)="quickSearch()" [(ngModel)]="searchValue" ml-2 >
         <button *ngIf="botoElimina"  mat-stroked-button id="botoElimina"  (click)="removeData()">
             <mat-icon fontSet="material-icons-round" > delete </mat-icon>
-            Elimina
+            <span  [translate]="'Remove'"> </span>
+            
         </button>
         <button  *ngIf="botoNou" mat-stroked-button id="botoNou"  (click)="newData()">
-            <mat-icon fontSet="material-icons-round"> add_circle_outline </mat-icon>                 
-            Nou
+            <mat-icon fontSet="material-icons-round"> add_circle_outline </mat-icon>      
+            <span  [translate]="'New'"> </span>           
         </button>
 
 

@@ -200,20 +200,23 @@ export class DataGridComponent {
     if (this.comptadorCanvis > this.comptadorCanvisAnterior)
       // Esta condición será cierta si venimos de editar la cela o de hacer un redo
       {
-        if (! this.map.has(params.node.id)) // Si no habiamos editado la cela con anterioridad, la añadimos al map y la pintamos de verde
+        if (params.oldValue !== params.value && !(params.oldValue == null && params.value === ''))
         {
-          this.map.set(params.node.id, 1);
+          if (! this.map.has(params.node.id)) // Si no habiamos editado la cela con anterioridad, la añadimos al map y la pintamos de verde
+          {
+            this.map.set(params.node.id, 1);
+          }
+          else{
+             // Si ya habíamos modificado la cela, aumentamos el numero de cambios en esta
+            const modificacionsActuals = this.map.get(params.node.id);
+            this.map.set(params.node.id, (modificacionsActuals + 1));
+          }
+          const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex); // Com ha estado modificada la linia, la pintamos de verde
+          params.colDef.cellStyle = {backgroundColor: '#E8F1DE'};
+          this.gridApi.redrawRows({rowNodes: [row]});
+          params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; // Definiremos el cellStyle blanco para futuras modificaciones internas (ej: filtro)
+          this.comptadorCanvisAnterior++;
         }
-        else{
-           // Si ya habíamos modificado la cela, aumentamos el numero de cambios en esta
-          const modificacionsActuals = this.map.get(params.node.id);
-          this.map.set(params.node.id, (modificacionsActuals + 1));
-        }
-        const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex); // Com ha estado modificada la linia, la pintamos de verde
-        params.colDef.cellStyle = {backgroundColor: '#E8F1DE'};
-        this.gridApi.redrawRows({rowNodes: [row]});
-        params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; // Definiremos el cellStyle blanco para futuras modificaciones internas (ej: filtro)
-        this.comptadorCanvisAnterior++;
 
       }
     else if (this.comptadorCanvis < this.comptadorCanvisAnterior){ // Entrará aquí si hemos hecho un undo
