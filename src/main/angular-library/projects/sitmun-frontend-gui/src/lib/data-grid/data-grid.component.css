@@ -1,0 +1,78 @@
+label,
+input {
+  display: inline-block;
+  margin-right: 5px;
+  margin-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#botoNou {
+  color: white;
+  background: #68a225 0% 0% no-repeat padding-box;
+  margin-left: 3px;
+}
+
+#botoElimina {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  margin-left: 3px;
+}
+
+#aplicarCanvis {
+  color: white !important;
+  background: #68a225 0% 0% no-repeat padding-box;
+  margin-left: 3px;
+}
+
+#aplicarCanvis[disabled]
+{
+  background: #83976c 0% 0% no-repeat padding-box;
+}
+
+#redo {
+  color: white !important;
+  background: #ff9300;
+  margin-left: 3px;
+}
+
+#redo[disabled] {
+  background: #ffc97f;
+  margin-left: 3px;
+}
+
+#undo {
+  color: white !important;
+  background: #ff9300;
+  margin-left: 3px;
+}
+
+#undo[disabled] {
+  background: #ffc97f;
+  margin-left: 3px;
+}
+
+#borrarCanvis {
+  color: white !important;
+  background: #df3133;
+}
+
+#borrarCanvis[disabled] {
+  color: white !important;
+  background: #da8c8e;
+}
+
+#grup1 {
+  text-align: start;
+  display: inline-block;
+  width: 40%;
+}
+
+#grup2 {
+  text-align: end;
+  width: 60%;
+}
+
+#grup1,
+#grup2 {
+  display: inline-block !important;
+}
