@@ -42,7 +42,7 @@ export class DataGridComponent {
 
 
   @Output() remove: EventEmitter<any[]>;
-  @Output() new: EventEmitter<boolean>;
+  @Output() new: EventEmitter<number>;
   @Output() sendChanges: EventEmitter<any[]>;
 
 
@@ -125,7 +125,7 @@ export class DataGridComponent {
   newData(): void
   {
     this.gridApi.stopEditing(false);
-    this.new.emit(true);
+    this.new.emit(-1);
   }
 
   applyChanges(): void
