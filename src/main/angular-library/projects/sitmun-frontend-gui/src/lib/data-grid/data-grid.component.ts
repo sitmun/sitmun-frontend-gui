@@ -28,6 +28,7 @@ export class DataGridComponent {
   comptadorRedo: number; // Numero de redo que podemos hacer
   canviAmbModificacions = false;
   gridOptions;
+  @Input() frameworkComponents: any;
   @Input() columnDefs: any[];
   @Input() getAll: () => Observable<any>;
   @Input() botoDescartarCanvis: boolean;
