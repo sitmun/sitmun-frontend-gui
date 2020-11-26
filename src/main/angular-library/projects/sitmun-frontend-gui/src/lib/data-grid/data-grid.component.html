@@ -1,27 +1,27 @@
     <div id=grup1 class="editDivBtns">
-        <button  mat-mini-fab class="editBtn"  *ngIf="botoDescartarCanvis"  id="borrarCanvis" type="button"  (click)="deleteChanges()" [disabled]="comptadorCanvis <= 0">
+        <button  mat-mini-fab class="editBtn"  *ngIf="discardChangesButton"  id="borrarCanvis" type="button"  (click)="deleteChanges()" [disabled]="changeCounter <= 0">
             <mat-icon  fontSet="material-icons-round" > close </mat-icon>
         </button>
-        <button mat-mini-fab class="editBtn" *ngIf="botoUndo"  id="undo"  (click)="undo()" [disabled]="comptadorCanvis <= 0" >
+        <button mat-mini-fab class="editBtn" *ngIf="undoButton"  id="undo"  (click)="undo()" [disabled]="changeCounter <= 0" >
             <mat-icon fontSet="material-icons-round" > undo </mat-icon>
         </button>
-        <button mat-mini-fab class="editBtn" *ngIf="botoRedo"  id="redo"  (click)="redo()" [disabled]="comptadorRedo <= 0">
+        <button mat-mini-fab class="editBtn" *ngIf="redoButton"  id="redo"  (click)="redo()" [disabled]="redoCounter <= 0">
             <mat-icon fontSet="material-icons-round" > redo </mat-icon>
         </button>
-        <button mat-mini-fab class="editBtn" *ngIf="botoAplicarCanvis"  id="aplicarCanvis"  (click)="applyChanges()" [disabled]="comptadorCanvis <= 0" >
+        <button mat-mini-fab class="editBtn" *ngIf="applyChangesButton"  id="aplicarCanvis"  (click)="applyChanges()" [disabled]="changeCounter <= 0" >
             <mat-icon fontSet="material-icons-round" > check </mat-icon>
         </button>
     </div>
 
     <div id=grup2 class="actionsDivBtns" >
-        <label *ngIf="searchGeneral" [translate]="'Search'"> </label>
-        <input *ngIf="searchGeneral"type="text" class="searchGenericInput" placeholder="" (keyup)="quickSearch()" [(ngModel)]="searchValue" ml-2 >
-        <button *ngIf="botoElimina"  mat-stroked-button id="botoElimina"  (click)="removeData()">
+        <label *ngIf="globalSearch" [translate]="'Search'"> </label>
+        <input *ngIf="globalSearch"type="text" class="searchGenericInput" placeholder="" (keyup)="quickSearch()" [(ngModel)]="searchValue" ml-2 >
+        <button *ngIf="deleteButton"  mat-stroked-button id="botoElimina"  (click)="removeData()">
             <mat-icon fontSet="material-icons-round" > delete </mat-icon>
             <span  [translate]="'Remove'"> </span>
             
         </button>
-        <button  *ngIf="botoNou" mat-stroked-button id="botoNou"  (click)="newData()">
+        <button  *ngIf="newButton" mat-stroked-button id="botoNou"  (click)="newData()">
             <mat-icon fontSet="material-icons-round"> add_circle_outline </mat-icon>      
             <span  [translate]="'New'"> </span>           
         </button>
@@ -48,7 +48,6 @@
             [undoRedoCellEditingLimit]= 200
             [suppressRowClickSelection]=true
             [enableCellChangeFlash]=true
-            [sortable]=true
             [frameworkComponents]="frameworkComponents"
             rowSelection="multiple"
             (filterModified)="onFilterModified()"
