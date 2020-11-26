@@ -1,24 +1,24 @@
 
 
 
-    <div id=grup1 >
-        <button  mat-mini-fab  *ngIf="botoDescartarCanvis"  id="borrarCanvis" type="button"  (click)="deleteChanges()" [disabled]="comptadorCanvis <= 0">
+    <div id=grup1 class="editDivBtns">
+        <button  mat-mini-fab class="editBtn"  *ngIf="botoDescartarCanvis"  id="borrarCanvis" type="button"  (click)="deleteChanges()" [disabled]="comptadorCanvis <= 0">
             <mat-icon  fontSet="material-icons-round" > close </mat-icon>
         </button>
-        <button mat-mini-fab *ngIf="botoUndo"  id="undo"  (click)="undo()" [disabled]="comptadorCanvis <= 0" >
+        <button mat-mini-fab  class="editBtn" *ngIf="botoUndo"  id="undo"  (click)="undo()" [disabled]="comptadorCanvis <= 0" >
             <mat-icon fontSet="material-icons-round" > undo </mat-icon>
         </button>
-        <button mat-mini-fab *ngIf="botoRedo"  id="redo"  (click)="redo()" [disabled]="comptadorRedo <= 0">
+        <button mat-mini-fab  class="editBtn" *ngIf="botoRedo"  id="redo"  (click)="redo()" [disabled]="comptadorRedo <= 0">
             <mat-icon fontSet="material-icons-round" > redo </mat-icon>
         </button>
-        <button mat-mini-fab  *ngIf="botoAplicarCanvis"  id="aplicarCanvis"  (click)="applyChanges()" [disabled]="comptadorCanvis <= 0" >
+        <button mat-mini-fab  class="editBtn" *ngIf="botoAplicarCanvis"  id="aplicarCanvis"  (click)="applyChanges()" [disabled]="comptadorCanvis <= 0" >
             <mat-icon fontSet="material-icons-round" > check </mat-icon>
         </button>
     </div>
 
-    <div id=grup2 >
+    <div id=grup2 class="actionsDivBtns" >
         <label *ngIf="searchGeneral" [translate]="'Search'"> </label>
-        <input *ngIf="searchGeneral"type="text" placeholder="" (keyup)="quickSearch()" [(ngModel)]="searchValue" ml-2 >
+        <input *ngIf="searchGeneral"type="text" class="searchGenericInput" placeholder="" (keyup)="quickSearch()" [(ngModel)]="searchValue" ml-2 >
         <button *ngIf="botoElimina"  mat-stroked-button id="botoElimina"  (click)="removeData()">
             <mat-icon fontSet="material-icons-round" > delete </mat-icon>
             <span  [translate]="'Remove'"> </span>

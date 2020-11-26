@@ -61,18 +61,50 @@ input {
   background: #da8c8e;
 }
 
-#grup1 {
+.editDivBtns {
   text-align: start;
   display: inline-block;
-  width: 40%;
+  width: 20%;
+  height: 30px !important;
+  line-height: 30px !important;
 }
 
-#grup2 {
+.actionsDivBtns {
   text-align: end;
-  width: 60%;
+  width:80%;
+  height: 60px;
 }
 
-#grup1,
-#grup2 {
+.actionsDivBtns,
+.editDivBtns {
   display: inline-block !important;
+}
+
+
+
+.actionsDivBtns .mat-stroked-button{
+ padding: 5px 20px!important;
+}
+
+
+
+.editDivBtns .mat-mini-fab .mat-button-wrapper {
+  padding: inherit !important;
+  display: inherit !important;
+}
+
+.editDivBtns .mat-icon{
+  height: 30px !important;
+  bottom: 5px;
+  position: relative;
+}
+
+.editDivBtns .mat-mini-fab {
+  width: 30px;
+  height: 30px;
+}
+
+.actionsDivBtns .searchGenericInput{
+  height: 45px!important;
+  width: 50% !important;
 }
