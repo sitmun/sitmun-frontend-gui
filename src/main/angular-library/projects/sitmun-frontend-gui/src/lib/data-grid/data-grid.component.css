@@ -108,3 +108,16 @@ input {
   height: 45px!important;
   width: 50% !important;
 }
+.ag-body-viewport.ag-layout-normal ::-webkit-scrollbar-thumb {
+  background: #eee;
+}​
+.ag-body-viewport.ag-layout-normal ::-webkit-scrollbar {
+  width: 2em;
+  height: 2em;
+}
+.ag-body-viewport.ag-layout-normal ::-webkit-scrollbar-button {
+  background: #ccc;
+}
+.ag-body-viewport.ag-layout-normal::-webkit-scrollbar-track-piece {
+  background: #888;
+}
