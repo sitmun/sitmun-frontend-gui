@@ -20,6 +20,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 
+
 registerLocaleData(localeCa, 'ca');
 registerLocaleData(localeEs, 'es');
 
@@ -39,7 +40,7 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AppComponent,
-        HomeComponent
+        HomeComponent,
     ],
     imports: [
         BrowserModule,

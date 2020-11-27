@@ -19,25 +19,25 @@ export class DataGridComponent {
   searchValue: string;
   private gridApi;
   private gridColumnApi;
-  columnaEstat = false;
+  statusColumn = false;
   map: Map<number, number> = new Map<number, number>(); // Guardaremos el id de las celas modificadas i el nº de ediciones hechas sobre estas
   private params; //Parametros del grid en la ultima modificacion hecha (por si hacemos apply changes)
   rowData: any[];
-  comptadorCanvis: number; // Numero de ediciones hechas sobre las celas
-  comptadorCanvisAnterior: number; //  Numero de ediciones que habia antes de hacer la ultima modificacion (comptadorCanvis)
-  comptadorRedo: number; // Numero de redo que podemos hacer
-  canviAmbModificacions = false;
+  changeCounter: number; // Numero de ediciones hechas sobre las celas
+  previousChangeCounter: number; //  Numero de ediciones que habia antes de hacer la ultima modificacion (changeCounter)
+  redoCounter: number; // Numero de redo que podemos hacer
+  modificationChange = false;
   gridOptions;
   @Input() frameworkComponents: any;
   @Input() columnDefs: any[];
   @Input() getAll: () => Observable<any>;
-  @Input() botoDescartarCanvis: boolean;
-  @Input() botoUndo: boolean;
-  @Input() botoRedo: boolean;
-  @Input() botoAplicarCanvis: boolean;
-  @Input() botoElimina: boolean;
-  @Input() botoNou: boolean;
-  @Input() searchGeneral: boolean;
+  @Input() discardChangesButton: boolean;
+  @Input() undoButton: boolean;
+  @Input() redoButton: boolean;
+  @Input() applyChangesButton: boolean;
+  @Input() deleteButton: boolean;
+  @Input() newButton: boolean;
+  @Input() globalSearch: boolean;
 
 
 
@@ -51,11 +51,12 @@ export class DataGridComponent {
     this.remove = new EventEmitter();
     this.new = new EventEmitter();
     this.sendChanges = new EventEmitter();
-    this.comptadorCanvis = 0;
-    this.comptadorCanvisAnterior = 0;
-    this.comptadorRedo = 0;
+    this.changeCounter = 0;
+    this.previousChangeCounter = 0;
+    this.redoCounter = 0;
     this.gridOptions = {
       defaultColDef: {
+        sortable: true,
         flex: 1,
         filter: true,
         editable: true,
@@ -79,7 +80,7 @@ export class DataGridComponent {
     this.gridApi.sizeColumnsToFit();
     for (const col of this.columnDefs) {
       if (col.field === 'estat') {
-        this.columnaEstat = true;
+        this.statusColumn = true;
       }
     }
  
@@ -107,7 +108,7 @@ export class DataGridComponent {
     const selectedData = selectedNodes.map(node => node.data);
     this.remove.emit(selectedData);
 
-    if(this.columnaEstat)
+    if(this.statusColumn)
     {
       const selectedRows = selectedNodes.map(node => node.rowIndex);
 
@@ -139,9 +140,9 @@ export class DataGridComponent {
     }
     this.sendChanges.emit(itemsChanged);
     this.map.clear();
-    this.comptadorCanvis = 0;
-    this.comptadorCanvisAnterior = 0;
-    this.comptadorRedo = 0;
+    this.changeCounter = 0;
+    this.previousChangeCounter = 0;
+    this.redoCounter = 0;
     this.params.colDef.cellStyle =  {backgroundColor: '#FFFFFF'};
     this.gridApi.redrawRows();
   }
@@ -150,14 +151,14 @@ export class DataGridComponent {
 
   deleteChanges(): void
   {
-    for (let i = 0; i < this.comptadorCanvis; i++)
+    for (let i = 0; i < this.changeCounter; i++)
     {
       this.gridApi.undoCellEditing();
     }
     this.map.clear();
-    this.comptadorCanvisAnterior = 0;
-    this.comptadorCanvis = 0;
-    this.comptadorRedo = 0;
+    this.previousChangeCounter = 0;
+    this.changeCounter = 0;
+    this.redoCounter = 0;
     this.params.colDef.cellStyle =  {backgroundColor: '#FFFFFF'};
     this.gridApi.redrawRows();
   }
@@ -171,26 +172,26 @@ export class DataGridComponent {
   undo(): void {
     this.gridApi.stopEditing(false);
     this.gridApi.undoCellEditing();
-    this.comptadorCanvis -= 1;
-    this.comptadorRedo += 1;
+    this.changeCounter -= 1;
+    this.redoCounter += 1;
   }
 
   redo(): void {
     this.gridApi.stopEditing(false);
     this.gridApi.redoCellEditing();
-    this.comptadorCanvis += 1;
-    this.comptadorRedo -= 1;
+    this.changeCounter += 1;
+    this.redoCounter -= 1;
   }
 
 
   onCellEditingStopped(e)
   {
-      if (this.canviAmbModificacions)
+      if (this.modificationChange)
       {
-        this.comptadorCanvis++;
-        this.comptadorRedo = 0;
+        this.changeCounter++;
+        this.redoCounter = 0;
         this.onCellValueChanged(e);
-        this.canviAmbModificacions = false;
+        this.modificationChange = false;
       }
   }
 
@@ -199,7 +200,7 @@ export class DataGridComponent {
   onCellValueChanged(params): void{
     this.params = params; // Guardaremos los parametros por si hay que hacer un apply changes
 
-    if (this.comptadorCanvis > this.comptadorCanvisAnterior)
+    if (this.changeCounter > this.previousChangeCounter)
       // Esta condición será cierta si venimos de editar la cela o de hacer un redo
       {
         if (params.oldValue !== params.value && !(params.oldValue == null && params.value === ''))
@@ -210,43 +211,43 @@ export class DataGridComponent {
           }
           else{
              // Si ya habíamos modificado la cela, aumentamos el numero de cambios en esta
-            const modificacionsActuals = this.map.get(params.node.id);
-            this.map.set(params.node.id, (modificacionsActuals + 1));
+            const currentChanges = this.map.get(params.node.id);
+            this.map.set(params.node.id, (currentChanges + 1));
           }
           const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex); // Com ha estado modificada la linia, la pintamos de verde
           params.colDef.cellStyle = {backgroundColor: '#E8F1DE'};
           this.gridApi.redrawRows({rowNodes: [row]});
           params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; // Definiremos el cellStyle blanco para futuras modificaciones internas (ej: filtro)
-          this.comptadorCanvisAnterior++;
+          this.previousChangeCounter++;
         }
 
       }
-    else if (this.comptadorCanvis < this.comptadorCanvisAnterior){ // Entrará aquí si hemos hecho un undo
+    else if (this.changeCounter < this.previousChangeCounter){ // Entrará aquí si hemos hecho un undo
         
-        const modificacionsActuals = this.map.get(params.node.id);
+        const currentChanges = this.map.get(params.node.id);
         
-        if (modificacionsActuals === 1) {
+        if (currentChanges === 1) {
           // Si solo tiene una modificacion, quiere decir que la cela está en su estado inicial, por lo que la pintamos de blanco
           this.map.delete(params.node.id);
           const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex);
           params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; // Li posarem un altre cop el background blanc
           this.gridApi.redrawRows({rowNodes: [row]});
         }
-        else if (modificacionsActuals >1) // La cela aún no está en su estado inicial, por lo que segguirá verde
+        else if (currentChanges >1) // La cela aún no está en su estado inicial, por lo que segguirá verde
         {                                 // No podemos hacer else por si hacemos un undo de una cela sin cambios
-          this.map.set(params.node.id, (modificacionsActuals - 1));
+          this.map.set(params.node.id, (currentChanges - 1));
           const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex); // Como aun tiene cambios, el background tiene que seguir verde
           params.colDef.cellStyle = {backgroundColor: '#E8F1DE'};
           this.gridApi.redrawRows({rowNodes: [row]});
           params.colDef.cellStyle = {backgroundColor: '#FFFFFF'}; // Definirem el cellStyle blanc per proximes celes
         }
-        this.comptadorCanvisAnterior--;  // Com veniem d'undo, hem de decrementar el comptador de canvisAnterior
+        this.previousChangeCounter--;  // Com veniem d'undo, hem de decrementar el comptador de canvisAnterior
     }
     else{
       console.log(params);
       if(params.oldValue !== params.value && !(params.oldValue == null && params.value === '') )
       {
-        this.canviAmbModificacions = true;
+        this.modificationChange = true;
       }
       else{
         if ( this.map.has(params.node.id))
@@ -258,7 +259,7 @@ export class DataGridComponent {
 
         }
         else {
-          this.comptadorCanvisAnterior++; // Como al hacer undo volverá a entrar a esta misma función, hay que enviarlo a su if correspondiente
+          this.previousChangeCounter++; // Como al hacer undo volverá a entrar a esta misma función, hay que enviarlo a su if correspondiente
           this.gridApi.undoCellEditing(); //Undo para deshacer el cambio sin modificaciones internamente
         }
 

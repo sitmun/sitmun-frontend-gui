@@ -20,6 +20,7 @@ import { DataGridComponent } from './data-grid/data-grid.component';
 import { AgGridModule } from '@ag-grid-community/angular';
 import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import { BtnEditRenderedComponent } from './btn-edit-rendered/btn-edit-rendered.component';
 
 
 
@@ -42,7 +43,8 @@ import {MatIconModule} from '@angular/material/icon';
  
   ],
   declarations: [
-    DataGridComponent
+    DataGridComponent,
+    BtnEditRenderedComponent,
   ],
   entryComponents: [
   ],
