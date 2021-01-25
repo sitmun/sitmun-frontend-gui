@@ -15,7 +15,6 @@
     "@sitmun/frontend-core": "0.8.0",
     "core-js": "^3.8.2",
     "rxjs": "~6.6.0",
-    "rxjs-compat": "^6.6.3",
     "zone.js": "~0.10.2"
   },
   "dependencies": {}
