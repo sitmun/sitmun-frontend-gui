@@ -1,0 +1,10 @@
+
+
+.dialogConent{
+    margin:inherit !important;
+    padding: inherit !important;
+    max-height: 60vh !important;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}

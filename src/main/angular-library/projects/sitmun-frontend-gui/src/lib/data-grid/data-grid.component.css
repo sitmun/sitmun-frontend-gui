@@ -1,0 +1,130 @@
+label,
+input {
+  display: inline-block;
+  margin-right: 5px;
+  margin-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#newButton {
+  color: white;
+  background: #68a225 0% 0% no-repeat padding-box;
+  margin-left: 3px;
+}
+
+#deleteButton {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  margin-left: 3px;
+}
+
+#actionButton {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  margin-left: 3px;
+  text-align: center !important;
+}
+
+
+#applyChangesButton {
+  color: white !important;
+  background: #68a225 0% 0% no-repeat padding-box;
+  margin-left: 3px;
+}
+
+#applyChangesButton[disabled]
+{
+  background: #83976c 0% 0% no-repeat padding-box;
+}
+
+#redo {
+  color: white !important;
+  background: #ff9300;
+  margin-left: 3px;
+}
+
+#redo[disabled] {
+  background: #ffc97f;
+  margin-left: 3px;
+}
+
+#undo {
+  color: white !important;
+  background: #ff9300;
+  margin-left: 3px;
+}
+
+#undo[disabled] {
+  background: #ffc97f;
+  margin-left: 3px;
+}
+
+#deleteChangesButton {
+  color: white !important;
+  background: #df3133;
+}
+
+#deleteChangesButton[disabled] {
+  color: white !important;
+  background: #da8c8e;
+}
+
+.editDivBtns {
+  margin-left: 10px;
+  text-align: start;
+  width: 130px;
+  height: 30px !important;
+  line-height: 30px !important;
+}
+
+.actionsDivBtns {
+  text-align: end;
+  width: calc(100% - 140px);
+  height: 60px;
+}
+
+.actionsDivBtns,
+.editDivBtns {
+  display: inline-block !important;
+}
+
+
+
+.actionsDivBtns .mat-stroked-button{
+ padding: 5px 20px!important;
+}
+
+
+
+.editDivBtns .mat-mini-fab .mat-button-wrapper {
+  padding: inherit !important;
+  display: inherit !important;
+}
+
+.editDivBtns .mat-icon{
+  height: 30px !important;
+  bottom: 5px;
+  position: relative;
+}
+
+.editDivBtns .mat-mini-fab {
+  width: 30px;
+  height: 30px;
+}
+
+.actionsDivBtns .searchGenericInput{
+  height: 45px!important;
+  width: 45% !important;
+}
+.ag-body-viewport.ag-layout-normal ::-webkit-scrollbar-thumb {
+  background: #eee;
+}​
+.ag-body-viewport.ag-layout-normal ::-webkit-scrollbar {
+  width: 2em;
+  height: 2em;
+}
+.ag-body-viewport.ag-layout-normal ::-webkit-scrollbar-button {
+  background: #ccc;
+}
+.ag-body-viewport.ag-layout-normal::-webkit-scrollbar-track-piece {
+  background: #888;
+}

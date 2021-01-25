@@ -1,0 +1,81 @@
+    <div id=grup1 class="editDivBtns">
+        <span *ngIf="title"  [translate]="title"> </span>
+        <button title="{{ 'cancel' | translate }}" mat-mini-fab class="editBtn"  *ngIf="discardChangesButton"  id="deleteChangesButton" type="button"  (click)="deleteChanges()" [disabled]="changeCounter <= 0">
+            <mat-icon  fontSet="material-icons-round" > close </mat-icon>
+        </button>
+        <button title="{{ 'undo' | translate }}" mat-mini-fab class="editBtn" *ngIf="undoButton"  id="undo"  (click)="undo()" [disabled]="changeCounter <= 0" >
+            <mat-icon fontSet="material-icons-round" > undo </mat-icon>
+        </button>
+        <button title="{{ 'redo' | translate }}" mat-mini-fab class="editBtn" *ngIf="redoButton"  id="redo"  (click)="redo()" [disabled]="redoCounter <= 0">
+            <mat-icon fontSet="material-icons-round" > redo </mat-icon>
+        </button>
+        <button title="{{ 'accept' | translate }}" mat-mini-fab class="editBtn" *ngIf="applyChangesButton"  id="applyChangesButton"  (click)="applyChanges()" [disabled]="changeCounter <= 0" >
+            <mat-icon fontSet="material-icons-round" > check </mat-icon>
+        </button>
+    </div>
+
+    <div id=grup2 class="actionsDivBtns" >
+        <label *ngIf="globalSearch" [translate]="'search'"> </label>
+        <input *ngIf="globalSearch"type="text" class="searchGenericInput" placeholder="" (keyup)="quickSearch()" [(ngModel)]="searchValue" ml-2 >
+        <button *ngIf="deleteButton"  mat-stroked-button id="deleteButton"  (click)="removeData()">
+            <mat-icon fontSet="material-icons-round" > delete </mat-icon>
+            <span  [translate]="'remove'"> </span>
+            
+        </button>
+
+        
+        <button *ngIf="actionButton"  mat-stroked-button [matMenuTriggerFor]="menu" id="actionButton">
+            <span  [translate]="'actions'"> </span>    
+            <mat-icon fontSet="material-icons-round" > keyboard_arrow_down </mat-icon>     
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngIf="!hideExportButton" (click)="exportData()" > {{"export" | translate}} </button>
+            <button mat-menu-item *ngIf="!hideDuplicateButton" (click)="onDuplicateButtonClicked()"> {{"duplicate" | translate}}</button>
+            <button mat-menu-item *ngIf="!hideSearchReplaceButton"> {{"search/replace" | translate}}</button>
+        </mat-menu>  
+            
+
+        <button  *ngIf="newButton" mat-stroked-button id="newButton"  (click)="newData()">
+            <mat-icon fontSet="material-icons-round"> add_circle_outline </mat-icon>      
+            <span  [translate]="'new'"> </span>           
+        </button>
+
+        <button  *ngIf="addButton" mat-stroked-button id="newButton"  (click)="onAddButtonClicked()">
+            <mat-icon fontSet="material-icons-round"> add_circle_outline </mat-icon>      
+            <span  [translate]="'add'"> </span>           
+        </button>
+        
+
+        
+    </div>
+
+
+
+    <div class="row" style=" height: 100%">
+        <div id="myGrid" style=" width:100%; height: 100%" >
+            <ag-grid-angular
+            style=" width: 100%; height: 100%;"
+            [class]="themeGrid"
+            [floatingFilter]="true"
+            [rowData]="rowData"
+            [columnDefs]="columnDefs"
+            [gridOptions]="gridOptions"
+            [animateRows]="true"
+            [pagination]="false"
+            [modules]="modules"     
+            [undoRedoCellEditing]="true"    
+            [undoRedoCellEditingLimit]= 200
+            [suppressRowClickSelection]=true
+            [frameworkComponents]="frameworkComponents"
+            rowSelection="multiple"
+            multiSortKey="key"
+            (filterModified)="onFilterModified()"
+            (cellEditingStopped) ="onCellEditingStopped($event)"
+            (cellValueChanged)="onCellValueChanged($event)"
+            (gridReady)="onGridReady($event)">
+            
+            </ag-grid-angular>
+        </div>
+    </div>
+
+

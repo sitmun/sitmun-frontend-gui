@@ -1,3 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 /* @import "~@angular/material/prebuilt-themes/indigo-pink.css";*/
-
+@import "../../../../node_modules/@ag-grid-community/all-modules/dist/styles/ag-grid.css";
+@import "../../../../node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-balham.css";
+@import "../../../../node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-balham-dark.css";
+@import "../../../../node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-dark.css";
+@import "../../../../node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-blue.css";
+@import "../../../../node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-bootstrap.css";
+@import "../../../../node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-fresh.css";
+@import "../../../../node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-material.css";

@@ -1,0 +1,44 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
+	<mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding cdkDrag [cdkDragData]="node"
+		(mouseenter)="dragHover(node)" (mouseleave)="dragHoverEnd()" (cdkDragStarted)="dragStart()"
+		(cdkDragReleased)="dragEnd()">
+		<button mat-icon-button disabled></button>
+		<mat-icon *ngIf="node.type ==='folder'" class="type-icon" [attr.aria-label]="node.type + 'icon'">
+			folder
+		</mat-icon>
+		{{node.name}}
+		<button *ngIf="node.type ==='folder'" (click)="onButtonClicked(node.id, 'newFolder')" mat-icon-button>
+			<mat-icon>create_new_folder</mat-icon>
+		</button>
+		<button *ngIf="node.type ==='folder'" (click)="onButtonClicked(node.id, 'newNode')" mat-icon-button>
+			<mat-icon>playlist_add</mat-icon>
+		</button>
+		<button mat-icon-button (click)="onButtonClicked(node.id, 'edit')">
+			<mat-icon>edit</mat-icon>
+		</button>
+	</mat-tree-node>
+
+	<mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding cdkDrag [cdkDragData]="node"
+		(mouseenter)="dragHover(node)" (mouseleave)="dragHoverEnd()" (cdkDragStarted)="dragStart()"
+		(cdkDragReleased)="dragEnd()">
+		<button mat-icon-button matTreeNodeToggle (click)="expansionModel.toggle(node.id)"
+			[attr.aria-label]="'toggle ' + node.name">
+			<mat-icon class="mat-icon-rtl-mirror">
+				{{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+			</mat-icon>
+		</button>
+		<mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">
+			folder
+		</mat-icon>
+		{{node.name}}
+		<button *ngIf="node.type ==='folder'" (click)="onButtonClicked(node.id, 'newFolder')" mat-icon-button>
+			<mat-icon>create_new_folder</mat-icon>
+		</button>
+		<button *ngIf="node.type ==='folder'" (click)="onButtonClicked(node.id, 'newNode')" mat-icon-button>
+			<mat-icon>playlist_add</mat-icon>
+		</button>
+		<button mat-icon-button (click)="onButtonClicked(node.id, 'edit')">
+			<mat-icon>edit</mat-icon>
+		</button>
+	</mat-tree-node>
+</mat-tree>
