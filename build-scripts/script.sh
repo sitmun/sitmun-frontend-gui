@@ -7,7 +7,8 @@ echo
 npm set //npm.pkg.github.com/:_authToken $GITHUB_API_KEY
 
 cd $TRAVIS_BUILD_DIR
-if ./gradlew npmBuildAngularLibrary; then    
+# TODO: Build with --prod only when publishing to nmp repository, and not always
+if ./gradlew npmBuildAngularLibraryProd; then    
     echo
 else        
     echo

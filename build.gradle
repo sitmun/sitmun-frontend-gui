@@ -42,9 +42,21 @@ task npmBuildSitmunFrontendGUI(type: NpmTask, dependsOn: ['npmInstall']) {
     args = ['run-script', 'build-sitmun-frontend-gui']
 }
 
+task npmBuildSitmunFrontendGUIProd(type: NpmTask, dependsOn: ['npmInstall']) {
+    description = 'Build module sitmun-frontend-gui.'
+    args = ['run-script', 'build-sitmun-frontend-gui-prod']
+}
+
+
+
 task npmBuildAngularLibrary(type: NpmTask, dependsOn: ['npmInstall', 'npmBuildSitmunFrontendGUI']) {
     description = 'Build angular library.'
     args = ['run-script', 'build-angular-library']
+}
+
+task npmBuildAngularLibraryProd(type: NpmTask, dependsOn: ['npmInstall', 'npmBuildSitmunFrontendGUIProd']) {
+    description = 'Build angular library.'
+    args = ['run-script', 'build-angular-library-prod']
 }
 
 
