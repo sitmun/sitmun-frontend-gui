@@ -8,7 +8,7 @@
     "build-angular-library": "ng build angular-library",
     "build-angular-library-prod": "ng build angular-library --prod",
     "build-sitmun-frontend-gui": "ng build sitmun-frontend-gui",
-    "build-sitmun-frontend-gui": "ng build sitmun-frontend-gui --prod",
+    "build-sitmun-frontend-gui-prod": "ng build sitmun-frontend-gui --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
