@@ -33,7 +33,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/main/angular-library/src/environments/environment.ts",
-                  "with": "src/main/angular-librarysrc/environments/environment.prod.ts"
+                  "with": "src/main/angular-library/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
