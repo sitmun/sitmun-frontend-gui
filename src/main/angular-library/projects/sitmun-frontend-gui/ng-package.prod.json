@@ -3,6 +3,5 @@
   "dest": "../../../../../dist/sitmun-frontend-gui",
   "lib": {
     "entryFile": "src/lib/public_api.ts"
-  },
-  "private": false
+  }
 }
