@@ -11,6 +11,7 @@
     "**/*.spec.ts"
   ],
    "angularCompilerOptions": {
-    "enableIvy": false
+    "enableIvy": false,
+    "skipLibCheck": true
   }
 }
