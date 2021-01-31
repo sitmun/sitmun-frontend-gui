@@ -3,12 +3,12 @@ import { Component, OnInit, NgModule, Input, Output, EventEmitter } from '@angul
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AllCommunityModules, ColumnApi, Module} from '@ag-grid-community/all-modules';
+import { AllCommunityModules, ColumnApi, Module } from '@ag-grid-community/all-modules';
 
-import {TranslateService} from '@ngx-translate/core';
-import {BtnEditRenderedComponent} from '../btn-edit-rendered/btn-edit-rendered.component';
-import {BtnCheckboxRenderedComponent} from '../btn-checkbox-rendered/btn-checkbox-rendered.component';
-import {BtnCheckboxFilterComponent} from '../btn-checkbox-filter/btn-checkbox-filter.component';
+import { TranslateService } from '@ngx-translate/core';
+import { BtnEditRenderedComponent } from '../btn-edit-rendered/btn-edit-rendered.component';
+import { BtnCheckboxRenderedComponent } from '../btn-checkbox-rendered/btn-checkbox-rendered.component';
+import { BtnCheckboxFilterComponent } from '../btn-checkbox-filter/btn-checkbox-filter.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogMessageComponent } from '../dialog-message/dialog-message.component';
 import { isRotatedRectIntersect } from '@syncfusion/ej2-angular-charts';
@@ -21,10 +21,11 @@ import { isRotatedRectIntersect } from '@syncfusion/ej2-angular-charts';
   styleUrls: ['./data-grid.component.css']
 })
 export class DataGridComponent implements OnInit {
- 
+
   private _eventRefreshSubscription: any;
   private _eventGetSelectedRowsSubscription: any;
   private _eventGetAllRowsSubscription: any;
+  private _eventSaveAgGridStateSubscription: any;
   modules: Module[] = AllCommunityModules;
 
 
@@ -34,7 +35,7 @@ export class DataGridComponent implements OnInit {
   private gridColumnApi;
   statusColumn = false;
   changesMap: Map<number, Map<string, number>> = new Map<number, Map<string, number>>();
-   // We will save the id of edited cells and the number of editions done.
+  // We will save the id of edited cells and the number of editions done.
   private params; // Last parameters of the grid (in case we do apply changes we will need it) 
   rowData: any[];
   changeCounter: number; // Number of editions done above any cell 
@@ -45,14 +46,16 @@ export class DataGridComponent implements OnInit {
   gridOptions;
 
 
-  @Input() eventRefreshSubscription: Observable <boolean> ;
-  @Input() eventGetSelectedRowsSubscription: Observable <boolean> ;
-  @Input() eventGetAllRowsSubscription: Observable <boolean> ;
-  @Input() eventAddItemsSubscription: Observable <any[]> ;
+  @Input() eventRefreshSubscription: Observable<boolean>;
+  @Input() eventGetSelectedRowsSubscription: Observable<boolean>;
+  @Input() eventGetAllRowsSubscription: Observable<boolean>;
+  @Input() eventSaveAgGridStateSubscription: Observable<boolean>;
+  @Input() eventAddItemsSubscription: Observable<boolean>;
   @Input() frameworkComponents: any;
   @Input() columnDefs: any[];
   @Input() getAll: () => Observable<any>;
   @Input() discardChangesButton: boolean;
+  @Input() id: any;
   @Input() undoButton: boolean;
   @Input() redoButton: boolean;
   @Input() applyChangesButton: boolean;
@@ -77,9 +80,10 @@ export class DataGridComponent implements OnInit {
   @Output() duplicate: EventEmitter<any[]>;
   @Output() getSelectedRows: EventEmitter<any[]>;
   @Output() getAllRows: EventEmitter<any[]>;
+  @Output() getAgGridState: EventEmitter<any[]>;
 
 
-  constructor(    public dialog: MatDialog,
+  constructor(public dialog: MatDialog,
     public translate: TranslateService) {
     this.translate = translate;
 
@@ -105,46 +109,51 @@ export class DataGridComponent implements OnInit {
         flex: 1,
         filter: true,
         editable: !this.nonEditable,
-        cellStyle: {backgroundColor: '#FFFFFF'},
-        suppressMenu : true,
+        cellStyle: { backgroundColor: '#FFFFFF' },
+        suppressMenu: true,
         resizable: true
       },
       columnTypes: {
         dateColumn: {
-            filter: 'agDateColumnFilter',
-            filterParams: {
-              comparator(filterLocalDateAtMidnight, cellValue) {
-                const dateCellValue = new Date(cellValue);
-                const dateFilter = new Date(filterLocalDateAtMidnight);
+          filter: 'agDateColumnFilter',
+          filterParams: {
+            comparator(filterLocalDateAtMidnight, cellValue) {
+              const dateCellValue = new Date(cellValue);
+              const dateFilter = new Date(filterLocalDateAtMidnight);
 
-                if (dateCellValue.getTime() < dateFilter.getTime()) {
-                  return -1;
-                } else if (dateCellValue.getTime()  > dateFilter.getTime()) {
-                  return 1;
-                } else {
-                  return 0;
-                }
-              },
+              if (dateCellValue.getTime() < dateFilter.getTime()) {
+                return -1;
+              } else if (dateCellValue.getTime() > dateFilter.getTime()) {
+                return 1;
+              } else {
+                return 0;
+              }
             },
-            suppressMenu: true
+          },
+          suppressMenu: true
         }
-    },
+      },
       rowSelection: 'multiple',
       singleClickEdit: true,
       // suppressHorizontalScroll: true,
       localeTextFunc: (key: string, defaultValue: string) => {
         const data = this.translate.instant(key);
         return data === key ? defaultValue : data;
+      }
     }
-    };
+
 
   }
 
 
-  ngOnInit(){
+  ngOnInit() {
 
     if (this.eventRefreshSubscription) {
       this._eventRefreshSubscription = this.eventRefreshSubscription.subscribe(() => {
+        this.changesMap.clear();
+        this.changeCounter = 0;
+        this.previousChangeCounter = 0;
+        this.redoCounter = 0;
         this.getElements();
       });
     }
@@ -159,10 +168,15 @@ export class DataGridComponent implements OnInit {
       });
     }
 
-    if(this.eventAddItemsSubscription)
-    {
+    if (this.eventSaveAgGridStateSubscription) {
+      this._eventSaveAgGridStateSubscription = this.eventSaveAgGridStateSubscription.subscribe(() => {
+        this.saveAgGridState();
+      });
+    }
+
+    if (this.eventAddItemsSubscription) {
       this.eventAddItemsSubscription.subscribe(
-        (items) => {
+        (items: any) => {
           this.addItems(items);
         }
       )
@@ -170,15 +184,29 @@ export class DataGridComponent implements OnInit {
   }
 
 
+  firstDataRendered(): void {
+    if (localStorage.agGridState != undefined) {
+      let agGridState = JSON.parse(localStorage.agGridState)
+      if (agGridState.idAgGrid != undefined && agGridState.idAgGrid == this.id) {
+        this.gridApi.setFilterModel(agGridState.filterState);
+        this.gridColumnApi.setColumnState(agGridState.colState);
+        this.gridApi.setSortModel(agGridState.sortState);
+        this.searchValue = agGridState.valueSearchGeneric;
+        this.quickSearch();
+        this.removeAgGridState();
+      } else if (this.id != undefined) {
+        this.removeAgGridState();
+      }
+    }
+  }
 
-  onGridReady(params): void{
-    if (this.singleSelection) {this.gridOptions.rowSelection = 'single'}
+  onGridReady(params): void {
+    if (this.singleSelection) { this.gridOptions.rowSelection = 'single' }
     // if (this.nonEditable) {this.gridOptions.defaultColDef.editable = false}
     this.params = params;
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     this.getElements();
-    this.gridApi.sizeColumnsToFit();
     console.log(this.columnDefs);
     for (const col of this.columnDefs) {
       if (col.field === 'status') {
@@ -189,85 +217,98 @@ export class DataGridComponent implements OnInit {
     }
   }
 
-  
-  emitSelectedRows(): void{
+
+  emitSelectedRows(): void {
     const selectedNodes = this.gridApi.getSelectedNodes();
     const selectedData = selectedNodes.map(node => node.data);
     this.getSelectedRows.emit(selectedData);
   }
 
-  emitAllRows(): void{
+  emitAllRows(): void {
     let rowData = [];
     this.gridApi.forEachNode(node => rowData.push(node.data));
     this.getAllRows.emit(rowData);
   }
 
-  getColumnKeysAndHeaders(columnkeys: Array<any>): String{    
-    let header:Array<any> = [];
-    if (this.columnDefs.length == 0) {return ''};
+  saveAgGridState(): void {
+    let agGridState = {
+      idAgGrid: this.id,
+      colState: this.gridColumnApi.getColumnState(),
+      filterState: this.gridApi.getFilterModel(),
+      sortState: this.gridApi.getSortModel(),
+      valueSearchGeneric: this.searchValue
+    };
 
-    let allColumnKeys=this.gridOptions.columnApi.getAllDisplayedColumns();
+    localStorage.setItem("agGridState", JSON.stringify(agGridState));
+
+  }
+  removeAgGridState(): void {
+    localStorage.removeItem("agGridState")
+  }
+
+  getColumnKeysAndHeaders(columnkeys: Array<any>): String {
+    let header: Array<any> = [];
+    if (this.columnDefs.length == 0) { return '' };
+
+    let allColumnKeys = this.gridOptions.columnApi.getAllDisplayedColumns();
     // console.log(allColumnKeys);
     allColumnKeys.forEach(element => {
-        if (element.userProvidedColDef.headerName !== '')
-        {
-          columnkeys.push(element.userProvidedColDef.field);
-          header.push(element.userProvidedColDef.headerName);
-        }
-  
-      
+      if (element.userProvidedColDef.headerName !== '') {
+        columnkeys.push(element.userProvidedColDef.field);
+        header.push(element.userProvidedColDef.headerName);
+      }
+
+
     });
-    
+
     return header.join(",");
   }
 
 
-  exportData(): void{
-    let columnkeys:Array<any> = [];
-    let customHeader:String = '';
+  exportData(): void {
+    let columnkeys: Array<any> = [];
+    let customHeader: String = '';
     customHeader = this.getColumnKeysAndHeaders(columnkeys)
     let params = {
-        onlySelected: true,
-        columnKeys: columnkeys,
-        customHeader: customHeader,
-        skipHeader: true
+      onlySelected: true,
+      columnKeys: columnkeys,
+      customHeader: customHeader,
+      skipHeader: true
     };
     this.gridApi.exportDataAsCsv(params);
   }
 
-  quickSearch(): void{
+  quickSearch(): void {
     this.gridApi.setQuickFilter(this.searchValue);
-}
-
-  getElements(): void
-  {
-    this.getAll()
-    .subscribe((items) => {
-        this.rowData = items;
-        setTimeout(()=>{this.gridApi.sizeColumnsToFit()}, 30);
-        this.gridApi.setRowData(this.rowData);
-        console.log(this.rowData);
-    });
   }
 
-   addItems(newItems: any[]): void {
+  getElements(): void {
+    this.getAll()
+      .subscribe((items) => {
+        this.rowData = items;
+        this.gridApi.setRowData(this.rowData);
+        this.gridApi.sizeColumnsToFit()
+        console.log(this.rowData);
+
+      });
+  }
+
+  addItems(newItems: any[]): void {
     console.log(newItems);
     let itemsToAdd: Array<any> = [];
-    
+
     newItems.forEach(item => {
 
-    if( item.id==undefined || (this.rowData.find(element => element.id === item.id)) == undefined )
-    {
-      if(this.statusColumn)
-      {
-        item.status='Pending creation'
+      if (item.id == undefined || (this.rowData.find(element => element.id === item.id)) == undefined) {
+        if (this.statusColumn) {
+          item.status = 'Pending creation'
+        }
+        itemsToAdd.push(item);
+        this.rowData.push(item);
       }
-      itemsToAdd.push(item);
-      this.rowData.push(item);
-    }
-    else{
-      console.log(`Item with the ID ${item.id} already exists`)
-    }
+      else {
+        console.log(`Item with the ID ${item.id} already exists`)
+      }
     });
     this.gridApi.updateRowData({ add: itemsToAdd });
 
@@ -284,64 +325,57 @@ export class DataGridComponent implements OnInit {
     const selectedData = selectedNodes.map(node => node.data);
     this.remove.emit(selectedData);
 
-    if(this.statusColumn)
-    {
-      const selectedRows = selectedNodes.map(node => node.rowIndex);
+    if (this.statusColumn) {
+      const selectedRows = selectedNodes.map(node => node.id);
 
-      for (const id of selectedRows){
-          this.gridApi.getRowNode(id).data.status ='Deleted';
-        }
+      for (const id of selectedRows) {
+        this.gridApi.getRowNode(id).data.status = 'Deleted';
+      }
       this.gridOptions.api.refreshCells();
     }
     this.gridOptions.api.deselectAll();
   }
 
-  newData(): void
-  {
+  newData(): void {
     this.gridApi.stopEditing(false);
     this.new.emit(-1);
   }
 
-  onAddButtonClicked(): void
-  {
+  onAddButtonClicked(): void {
     this.gridApi.stopEditing(false);
     this.add.emit(-1);
   }
 
-  onDuplicateButtonClicked(): void
-  {
+  onDuplicateButtonClicked(): void {
     this.gridApi.stopEditing(false);
     console.log(this.changeCounter);
-    if (this.changeCounter>0)
-    {
+    if (this.changeCounter > 0) {
       const dialogRef = this.dialog.open(DialogMessageComponent);
-      dialogRef.componentInstance.title='Caution'
-      dialogRef.componentInstance.message='If you duplicate rows without apply changes, your modifications will be overwritted, do you want to continue?'
+      dialogRef.componentInstance.title = 'Caution'
+      dialogRef.componentInstance.message = 'If you duplicate rows without apply changes, your modifications will be overwritted, do you want to continue?'
       dialogRef.afterClosed().subscribe(result => {
-        if(result){
-          if(result.event==='Accept') {  
+        if (result) {
+          if (result.event === 'Accept') {
             const selectedNodes = this.gridApi.getSelectedNodes();
             const selectedData = selectedNodes.map(node => node.data);
             this.duplicate.emit(selectedData);
-         }
+          }
         }
       });
 
+    }
+    else {
+      const selectedNodes = this.gridApi.getSelectedNodes();
+      const selectedData = selectedNodes.map(node => node.data);
+      this.duplicate.emit(selectedData);
+    }
   }
-  else{
-    const selectedNodes = this.gridApi.getSelectedNodes();
-    const selectedData = selectedNodes.map(node => node.data);
-    this.duplicate.emit(selectedData);
-  }
-}
 
 
-  applyChanges(): void
-  {
+  applyChanges(): void {
     const itemsChanged: any[] = [];
     this.gridApi.stopEditing(false);
-    for (const key of this.changesMap.keys())
-    {
+    for (const key of this.changesMap.keys()) {
       itemsChanged.push(this.gridApi.getRowNode(key).data);
     }
     this.sendChanges.emit(itemsChanged);
@@ -349,32 +383,30 @@ export class DataGridComponent implements OnInit {
     this.changeCounter = 0;
     this.previousChangeCounter = 0;
     this.redoCounter = 0;
-    this.params.colDef.cellStyle =  {backgroundColor: '#FFFFFF'};
+    this.params.colDef.cellStyle = { backgroundColor: '#FFFFFF' };
     this.gridApi.redrawRows();
   }
 
 
 
-  deleteChanges(): void
-  {
+  deleteChanges(): void {
     this.gridApi.stopEditing(false);
 
-    while(this.changeCounter>0)
-    {
+    while (this.changeCounter > 0) {
       this.undo();
     }
-    
-      this.changesMap.clear();
-      //this.previousChangeCounter = 0;
-        this.redoCounter = 0;
-    
+
+    this.changesMap.clear();
+    //this.previousChangeCounter = 0;
+    this.redoCounter = 0;
+
 
     //this.params.colDef.cellStyle =  {backgroundColor: '#FFFFFF'};
     //this.gridApi.redrawRows();
   }
 
 
-  onFilterModified(): void{
+  onFilterModified(): void {
     this.deleteChanges();
   }
 
@@ -394,117 +426,118 @@ export class DataGridComponent implements OnInit {
   }
 
 
-  onCellEditingStopped(e)
-  {
-      if (this.modificationChange)
-      {
-        this.changeCounter++;
-        this.redoCounter = 0;
-        this.onCellValueChanged(e);
-        this.modificationChange = false;
-      }
+  onCellEditingStopped(e) {
+    if (this.modificationChange) {
+      this.changeCounter++;
+      this.redoCounter = 0;
+      this.onCellValueChanged(e);
+      this.modificationChange = false;
+    }
   }
 
 
-  onCellValueChanged(params): void{
+  onCellValueChanged(params): void {
     console.log("value Change")
-    this.params = params; 
+    this.params = params;
     if (this.changeCounter > this.previousChangeCounter)
-      // True if we have edited some cell or we have done a redo 
-      {
+    // True if we have edited some cell or we have done a redo 
+    {
 
-        if (params.oldValue !== params.value && !(params.oldValue == null && params.value === ''))
+      if (params.oldValue !== params.value && !(params.oldValue == null && params.value === '')) {
+
+        if (!this.changesMap.has(params.node.id)) // If it's firts edit of a cell, we add it to the map and we paint it
         {
-          
-          if (! this.changesMap.has(params.node.id)) // If it's firts edit of a cell, we add it to the map and we paint it
-          {
-            const addMap: Map<string, number> = new Map<string, number>();
-            addMap.set(params.colDef.field, 1)
-            this.changesMap.set(params.node.id, addMap);
-            if(this.statusColumn) {this.gridApi.getRowNode(params.node.id).data.status ='Modified'};
-          }
-          else{
-            if (! this.changesMap.get(params.node.id).has(params.colDef.field))
-            {
-
-              this.changesMap.get(params.node.id).set(params.colDef.field, 1);
+          const addMap: Map<string, number> = new Map<string, number>();
+          addMap.set(params.colDef.field, 1)
+          this.changesMap.set(params.node.id, addMap);
+          if (this.statusColumn) {
+            if (this.gridApi.getRowNode(params.node.id).data.status !== 'Pending creation') {
+              this.gridApi.getRowNode(params.node.id).data.status = 'Modified'
             }
-
-            else{
-              // We already had edited this cell, so we only increment number of changes of it on the map 
-             const currentChanges = this.changesMap.get(params.node.id).get(params.colDef.field);
-             this.changesMap.get(params.node.id).set(params.colDef.field, (currentChanges + 1));
-           }
-
           }
-          this.paintCells(params, this.changesMap); //We paint the row of the edited cell 
-          this.previousChangeCounter++; //We match the current previousChangeCounter with changeCounter
         }
+        else {
+          if (!this.changesMap.get(params.node.id).has(params.colDef.field)) {
 
+            this.changesMap.get(params.node.id).set(params.colDef.field, 1);
+          }
+
+          else {
+            // We already had edited this cell, so we only increment number of changes of it on the map 
+            const currentChanges = this.changesMap.get(params.node.id).get(params.colDef.field);
+            this.changesMap.get(params.node.id).set(params.colDef.field, (currentChanges + 1));
+          }
+
+        }
+        this.paintCells(params, this.changesMap); //We paint the row of the edited cell 
+        this.previousChangeCounter++; //We match the current previousChangeCounter with changeCounter
       }
-    else if (this.changeCounter < this.previousChangeCounter){ // True if we have done an undo
-        let currentChanges = -1;
-        if (this.changesMap.has(params.node.id)) {currentChanges = this.changesMap.get(params.node.id).get(params.colDef.field);}
-        
-        if (currentChanges === 1) { //Once the undo it's done, cell is in his initial status
 
-          this.changesMap.get(params.node.id).delete(params.colDef.field);
-          if(this.changesMap.get(params.node.id).size === 0) { // No more modifications in this row
-            this.changesMap.delete(params.node.id);
-            const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex);
-            if(this.statusColumn) {this.gridApi.getRowNode(params.node.id).data.status =''};
-            // We paint it white
-            this.gridApi.redrawRows({rowNodes: [row]});
-
-           }
-           else
-           {
-              this.paintCells(params, this.changesMap);
-           }
-
-        }
-        else if (currentChanges >1) // The cell isn't in his initial state yet
-        {                                 //We can't do else because we can be doing an undo without changes 
-          this.changesMap.get(params.node.id).set(params.colDef.field, (currentChanges - 1));
-
-          this.paintCells(params, this.changesMap);//Not initial state -> green background
-
-        }
-        this.previousChangeCounter--;  //We decrement previousChangeCounter because we have done undo
     }
-    else{ // Control of modifications without changes
-      if( !(params.oldValue == null && params.value === ''))
-      {
-        let newValue: string;
-        if(params.value == null) {newValue=''}
-        else{ newValue = params.value.toString() }
+    else if (this.changeCounter < this.previousChangeCounter) { // True if we have done an undo
+      let currentChanges = -1;
+      if (this.changesMap.has(params.node.id)) { currentChanges = this.changesMap.get(params.node.id).get(params.colDef.field); }
 
-          if ((params.oldValue!=undefined && params.oldValue!=null && params.oldValue.toString() !== newValue.toString()) 
-              || ((params.oldValue==undefined || params.oldValue == null) && newValue!=null)) { 
-             
-            this.modificationChange = true; 
-            if(params.colDef.cellRenderer=="btnCheckboxRendererComponent"){
-              var undoRedoActions={
-                cellValueChanges: this.gridApi.undoRedoService.cellValueChanges
-              };
-              this.gridApi.undoRedoService.pushActionsToUndoStack(undoRedoActions);
-              this.gridApi.undoRedoService.isFilling=false;
-              this.onCellEditingStopped(params);
+      if (currentChanges === 1) { //Once the undo it's done, cell is in his initial status
+
+        this.changesMap.get(params.node.id).delete(params.colDef.field);
+        if (this.changesMap.get(params.node.id).size === 0) { // No more modifications in this row
+          this.changesMap.delete(params.node.id);
+          const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex);
+          if (this.statusColumn) {
+            if (this.gridApi.getRowNode(params.node.id).data.status !== 'Pending creation') {
+              this.gridApi.getRowNode(params.node.id).data.status = ''
             }
-          }
-          else {this.modificationWithoutChanges(params)}
-        
+          };
+          // We paint it white
+          this.gridApi.redrawRows({ rowNodes: [row] });
+
+        }
+        else {
+          this.paintCells(params, this.changesMap);
+        }
+
       }
-      else {this.modificationWithoutChanges(params)}
+      else if (currentChanges > 1) // The cell isn't in his initial state yet
+      {                                 //We can't do else because we can be doing an undo without changes 
+        this.changesMap.get(params.node.id).set(params.colDef.field, (currentChanges - 1));
+
+        this.paintCells(params, this.changesMap);//Not initial state -> green background
+
+      }
+      this.previousChangeCounter--;  //We decrement previousChangeCounter because we have done undo
+    }
+    else { // Control of modifications without changes
+      if (!(params.oldValue == null && params.value === '')) {
+        let newValue: string;
+        if (params.value == null) { newValue = '' }
+        else { newValue = params.value.toString() }
+
+        if ((params.oldValue != undefined && params.oldValue != null && params.oldValue.toString() !== newValue.toString())
+          || ((params.oldValue == undefined || params.oldValue == null) && newValue != null)) {
+
+          this.modificationChange = true;
+          if (params.colDef.cellRenderer == "btnCheckboxRendererComponent") {
+            var undoRedoActions = {
+              cellValueChanges: this.gridApi.undoRedoService.cellValueChanges
+            };
+            this.gridApi.undoRedoService.pushActionsToUndoStack(undoRedoActions);
+            this.gridApi.undoRedoService.isFilling = false;
+            this.onCellEditingStopped(params);
+          }
+        }
+        else { this.modificationWithoutChanges(params) }
+
+      }
+      else { this.modificationWithoutChanges(params) }
     }
   }
 
   modificationWithoutChanges(params: any) {
 
-    if ( this.changesMap.has(params.node.id)) //Modification without changes in en edited cell
+    if (this.changesMap.has(params.node.id)) //Modification without changes in en edited cell
     {
-      if(!this.undoNoChanges)
-      {
+      if (!this.undoNoChanges) {
         this.gridApi.undoCellEditing(); // Undo to delete the change without changes internally 
         this.undoNoChanges = true;
         this.paintCells(params, this.changesMap);  //The cell has modifications yet -> green background 
@@ -515,8 +548,7 @@ export class DataGridComponent implements OnInit {
     }
     else {
       //With the internally undo will enter at this function, so we have to control when done the undo or not 
-      if(!this.undoNoChanges)
-      {
+      if (!this.undoNoChanges) {
         this.gridApi.undoCellEditing(); // Undo to delete the change internally
         this.undoNoChanges = true;
       }
@@ -528,22 +560,20 @@ export class DataGridComponent implements OnInit {
   getColumnIndexByColId(api: ColumnApi, colId: string): number {
     return api.getAllColumns().findIndex(col => col.getColId() === colId);
   }
-  paintCells(params: any,  changesMap: Map<number, Map<string, number>>, )
-  {
+  paintCells(params: any, changesMap: Map<number, Map<string, number>>,) {
     const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex);
 
-    this.changeCellStyleColumns(params,changesMap,'#E8F1DE');
-    this.gridApi.redrawRows({rowNodes: [row]});
-    this.changeCellStyleColumns(params,changesMap,'#FFFFFF'); 
+    this.changeCellStyleColumns(params, changesMap, '#E8F1DE');
+    this.gridApi.redrawRows({ rowNodes: [row] });
+    this.changeCellStyleColumns(params, changesMap, '#FFFFFF');
     // We will define cellStyle white to future modifications (like filter)
   }
 
-  changeCellStyleColumns(params: any, changesMap: Map<number, Map<string, number>>, color: string){
+  changeCellStyleColumns(params: any, changesMap: Map<number, Map<string, number>>, color: string) {
 
-    for (const key of changesMap.get(params.node.id).keys())
-    {
+    for (const key of changesMap.get(params.node.id).keys()) {
       const columnNumber = this.getColumnIndexByColId(this.gridColumnApi, key);
-      this.gridColumnApi.columnController.gridColumns[columnNumber].colDef.cellStyle = {backgroundColor: color};
+      this.gridColumnApi.columnController.gridColumns[columnNumber].colDef.cellStyle = { backgroundColor: color };
     }
 
 
