@@ -60,14 +60,14 @@ task npmBuildAngularLibraryProd(type: NpmTask, dependsOn: ['npmInstall', 'npmBui
 }
 
 
-task npmCreateCompodocs(type: NpmTask, dependsOn: ['npmBuildSitmunFrontendGUI', 'npmInstall']) {
+task npmCreateCompodocs(type: NpmTask, dependsOn: ['npmBuildSitmunFrontendGUIProd', 'npmInstall']) {
   description = 'Create compodocs por sitmun-frontend-gui.'
   args = ['run-script', 'compodoc']
 }
 
-task install dependsOn{npmBuildSitmunFrontendGUI}
+task install dependsOn{npmBuildSitmunFrontendGUIProd}
 
-task npmPublish(type: NpmTask, dependsOn: ['npmBuildAngularLibrary', 'npmInstall']) {
+task npmPublish(type: NpmTask, dependsOn: ['npmBuildAngularLibraryProd', 'npmInstall']) {
   description = 'Publish @sitmun/frontend-gui to GitHub packages registry'
   args = ['run-script', 'publish']
 }
