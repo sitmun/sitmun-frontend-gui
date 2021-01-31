@@ -52,7 +52,7 @@ export function createTranslateLoader(http: HttpClient) {
     AngularHalModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    AgGridModule.withComponents([]),
+    AgGridModule,
     SitmunFrontendCoreModule,
     MaterialModule,
     TranslateModule.forRoot({

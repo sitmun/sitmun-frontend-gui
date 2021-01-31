@@ -47,9 +47,9 @@ const appRoutes: Routes = [
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        SitmunFrontendCoreModule.forRoot(),
+        SitmunFrontendCoreModule,
         SitmunFrontendGuiModule,
-        AgGridModule.withComponents([]),
+        AgGridModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -61,7 +61,7 @@ const appRoutes: Routes = [
         MatIconModule,
         MatMenuModule,
         MatDialogModule,
-        AngularHalModule.forRoot(),
+        AngularHalModule,
         RouterModule.forRoot(appRoutes)
     ],
     entryComponents: [
