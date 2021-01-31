@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",    
+    "build": "ng build",
     "build-angular-library": "ng build angular-library",
     "build-angular-library-prod": "ng build angular-library --prod",
     "build-sitmun-frontend-gui": "ng build sitmun-frontend-gui",
@@ -72,6 +72,7 @@
     "sonar-scanner": "^3.1.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.0.2"
+    "typescript": "~4.0.2",
+    "tsickle": "~0.32.0"
   }
 }
