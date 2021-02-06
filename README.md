@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/sitmun/sitmun-frontend-gui.svg?branch=master)](https://travis-ci.com/sitmun/sitmun-frontend-gui)
+![CI](https://github.com/sitmun/sitmun-frontend-core/workflows/CI/badge.svg)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.sitmun:sitmun-frontend-gui&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.sitmun:sitmun-frontend-gui)
 
 
