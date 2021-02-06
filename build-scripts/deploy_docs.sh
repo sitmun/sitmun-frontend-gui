@@ -3,15 +3,18 @@ echo
 echo "Deploying docs ..."
 echo
 
-# This creates the Angular docs in $TRAVIS_BUILD_DIR/docs-build/doc-angular with Compodoc
-./gradlew npmCreateCompodocs
-
+# The Angular docs must have been created in $BUILD_DIR/docs-build/doc-frontend-gui with Compodoc
 if [ -n "$GITHUB_API_KEY" ]; then
-    cd "$TRAVIS_BUILD_DIR"/docs-build        
+    cd "$BUILD_DIR"/docs-build        
     rm -r -f sitmun.github.io
     git clone https://github.com/sitmun/sitmun.github.io.git
     cd sitmun.github.io
-    cp -r "$TRAVIS_BUILD_DIR"/docs-build/doc-frontend-gui .    
+    cp -r "$BUILD_DIR"/docs-build/doc-frontend-gui .    
+    # In GitHub Actions, set user and email for git repo
+    if [ -n "$CI" ]; then
+      git config user.name "GitHub Actions Bot"
+      git config user.email "<>"
+    fi
     git add doc-frontend-gui/*
     git commit -m "Automatic update of the docs"
     # Make sure to make the output quiet, or else the API token will leak!

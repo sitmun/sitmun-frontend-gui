@@ -1,0 +1,46 @@
+name: CI_AND_PUBLISH_PACKAGE
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'      
+
+jobs:
+  build-library-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Before install
+      run: npm set //npm.pkg.github.com/:_authToken ${{secrets.TOKEN_FOR_WORKFLOWS}}
+    - name: Install dependencies
+      run: npm ci    
+    - name: Build with --prod
+      run: npm run build-angular-library-prod
+    - name: Sonar Cloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{secrets.TOKEN_FOR_WORKFLOWS}}
+        SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+    - name: Create Compodocs
+      run: npm run compodoc
+    - name: Deploy compodocs
+      env:
+        USERNAME: ${{secrets.USERNAME_FOR_WORKFLOWS}}
+        GITHUB_API_KEY: ${{secrets.TOKEN_FOR_WORKFLOWS}}
+        BUILD_DIR: ${{github.workspace}}
+      run: ./build-scripts/deploy_docs.sh
+      shell: bash
+    - name: Publish to GitHub package repository
+      run: npm run publish
