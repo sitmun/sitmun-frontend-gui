@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-sitmun-frontend-gui": "ng build sitmun-frontend-gui",
+    "build-sitmun-frontend-gui-prod": "ng build sitmun-frontend-gui --prod",
     "build-angular-library": "ng build angular-library",
     "build-angular-library-prod": "ng build angular-library --prod",    
     "test": "ng test",
