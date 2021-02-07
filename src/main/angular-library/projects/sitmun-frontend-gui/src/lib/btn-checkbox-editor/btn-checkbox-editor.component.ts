@@ -9,7 +9,7 @@ import { ICellEditorAngularComp } from '@ag-grid-community/angular';
 @Component({
   selector: 'app-btn-checkbox-editor',
   templateUrl: './btn-checkbox-editor.component.html',
-  styleUrls: ['./btn-checkbox-editor.component.css']
+  styleUrls: ['./btn-checkbox-editor.component.scss']
 })
 export class BtnCheckboxEditorComponent implements ICellEditorAngularComp, AfterViewInit  {
 

@@ -11,14 +11,14 @@ import { BtnCheckboxRenderedComponent } from '../btn-checkbox-rendered/btn-check
 import { BtnCheckboxFilterComponent } from '../btn-checkbox-filter/btn-checkbox-filter.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogMessageComponent } from '../dialog-message/dialog-message.component';
-import { isRotatedRectIntersect } from '@syncfusion/ej2-angular-charts';
+
 
 
 
 @Component({
   selector: 'app-data-grid',
   templateUrl: './data-grid.component.html',
-  styleUrls: ['./data-grid.component.css']
+  styleUrls: ['./data-grid.component.scss']
 })
 export class DataGridComponent implements OnInit {
 
@@ -57,6 +57,7 @@ export class DataGridComponent implements OnInit {
   @Input() discardChangesButton: boolean;
   @Input() id: any;
   @Input() undoButton: boolean;
+  @Input() defaultColumnSorting: string;
   @Input() redoButton: boolean;
   @Input() applyChangesButton: boolean;
   @Input() deleteButton: boolean;
@@ -84,7 +85,7 @@ export class DataGridComponent implements OnInit {
 
 
   constructor(public dialog: MatDialog,
-    public translate: TranslateService) {
+    public translate: TranslateService,) {
     this.translate = translate;
 
     this.frameworkComponents = {
@@ -214,6 +215,12 @@ export class DataGridComponent implements OnInit {
 
         this.statusColumn = true;
       }
+    }
+    if(this.defaultColumnSorting){
+      const sortModel = [
+        {colId: this.defaultColumnSorting, sort: 'asc'}
+    ];
+    this.gridApi.setSortModel(sortModel);
     }
   }
 
@@ -351,8 +358,8 @@ export class DataGridComponent implements OnInit {
     console.log(this.changeCounter);
     if (this.changeCounter > 0) {
       const dialogRef = this.dialog.open(DialogMessageComponent);
-      dialogRef.componentInstance.title = 'Caution'
-      dialogRef.componentInstance.message = 'If you duplicate rows without apply changes, your modifications will be overwritted, do you want to continue?'
+      dialogRef.componentInstance.title = this.translate.instant('caution')
+      dialogRef.componentInstance.message = this.translate.instant('duplicateMessage')
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           if (result.event === 'Accept') {

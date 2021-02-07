@@ -1,0 +1,150 @@
+label,
+input {
+  display: inline-block;
+  margin-right: 5px;
+  margin-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.mat-raised-button.mat-orange,
+.mat-flat-button.mat-orange,
+.mat-mini-fab.mat-orange,
+.mat-icon.mat-orange {
+  background-color: #ff9300 !important;
+  color: white !important;
+}
+
+.mat-raised-button.mat-orange:disabled,
+.mat-flat-button.mat-orange:disabled,
+.mat-mini-fab.mat-orange:disabled,
+.mat-icon.mat-orange:disabled {
+  background: #ffc97f !important;
+  color: white !important;
+}
+
+.mat-raised-button.mat-green,
+.mat-flat-button.mat-green,
+.mat-mini-fab.mat-green,
+.mat-icon.mat-green {
+  background-color: #68a225 !important;
+  color: white !important;
+}
+
+.mat-raised-button.mat-green:disabled,
+.mat-flat-button.mat-green:disabled,
+.mat-mini-fab.mat-green:disabled,
+.mat-icon.mat-green:disabled {
+  background-color: #83976c !important;
+  color: white !important;
+}
+.mat-raised-button.mat-red,
+.mat-flat-button.mat-red,
+.mat-mini-fab.mat-red,
+.mat-icon.mat-red {
+  background-color: #bf0000 !important;
+  color: white !important;
+}
+
+.mat-raised-button.mat-red:disabled,
+.mat-flat-button.mat-red:disabled,
+.mat-mini-fab.mat-red:disabled,
+.mat-icon.mat-red:disabled {
+  background-color: #da8c8e !important;
+  color: white !important;
+}
+
+.validateButton {
+  background-color: #ff9300;
+  color: white;
+  min-width: 85px;
+  height: 40px;
+  margin-top: 34px !important;
+  justify-self: right !important;
+}
+
+.deleteButton {
+  color: #bf0000;
+  border: #bf0000 solid 1px !important;
+  min-width: 85px !important;
+  height: 40px;
+  justify-self: right !important;
+  float: inherit !important;
+}
+
+.returnButton,
+.actionButton {
+  color: #ff9300;
+  border: #ff9300 solid 1px !important;
+  min-width: 85px !important;
+  height: 40px;
+  justify-self: right !important;
+  float: inherit !important;
+}
+.saveButton, .newButton {
+  background-color: #68a225;
+  color: white;
+  min-width: 85px !important;
+  height: 40px;
+  justify-self: right !important;
+  float: inherit !important;
+}
+
+.editDivBtns {
+  margin-left: 10px;
+  text-align: start;
+  width: 130px;
+  height: 30px !important;
+  line-height: 30px !important;
+}
+
+.actionsDivBtns {
+  text-align: end;
+  width: calc(100% - 140px);
+  height: 50px;
+}
+
+.actionsDivBtns,
+.editDivBtns {
+  display: inline-block !important;
+}
+
+.actionsDivBtns .searchGenericInput {
+  height: 41px !important;
+  width: 45% !important;
+  display: inline-block !important;
+  margin: 0px 5px 5px 10px !important;
+}
+.ag-body-viewport.ag-layout-normal ::-webkit-scrollbar-thumb {
+  background: #eee;
+}
+​ .ag-body-viewport.ag-layout-normal ::-webkit-scrollbar {
+  width: 2em;
+  height: 2em;
+}
+.ag-body-viewport.ag-layout-normal ::-webkit-scrollbar-button {
+  background: #ccc;
+}
+.ag-body-viewport.ag-layout-normal::-webkit-scrollbar-track-piece {
+  background: #888;
+}
+
+.mini-fab {
+  width: 28px !important;
+  height: 28px !important;
+  line-height: 22px !important;
+  margin-top: 7px !important;
+  margin-right: 3px !important;
+  .mat-button-wrapper {
+    padding: 1px 0 !important;
+    line-height: 22px !important;
+    width: 24px !important;
+    height: 24px !important;
+
+    .mat-icon {
+      font-size: 20px;
+      padding-right: 0px;
+      line-height: 22px;
+    }
+  }
+}

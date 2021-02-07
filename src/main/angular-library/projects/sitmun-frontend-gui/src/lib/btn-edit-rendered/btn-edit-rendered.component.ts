@@ -4,7 +4,7 @@ import { Component, OnDestroy } from '@angular/core';
 @Component({
   selector: 'app-btn-edit-rendered',
   templateUrl: './btn-edit-rendered.component.html',
-  styleUrls: ['./btn-edit-rendered.component.css']
+  styleUrls: ['./btn-edit-rendered.component.scss']
 })
 export class BtnEditRenderedComponent implements ICellRendererAngularComp, OnDestroy {
 

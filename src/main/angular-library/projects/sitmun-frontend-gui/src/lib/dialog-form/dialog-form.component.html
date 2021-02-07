@@ -4,6 +4,6 @@
   </ng-container> 
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button  (click)="closeDialog()">{{"Cancel" | translate}}</button>
-  <button mat-button  (click)="doAdd()" cdkFocusInitial>{{"Accept" | translate}}</button>
+  <button mat-flat-button class="returnButton"  (click)="closeDialog()">{{"Cancel" | translate}}</button>
+  <button mat-flat-button class="saveButton"  (click)="doAdd()" cdkFocusInitial>{{"Accept" | translate}}</button>
 </mat-dialog-actions>

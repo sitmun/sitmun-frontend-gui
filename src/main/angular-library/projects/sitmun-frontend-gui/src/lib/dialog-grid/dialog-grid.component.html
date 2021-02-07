@@ -8,6 +8,7 @@
   </div>
 </mat-dialog-content>
 <div mat-dialog-actions align="end">
-  <button mat-button  (click)="closeDialog()">{{"cancel" | translate}}</button>
-  <button mat-button  (click)="getAllSelectedRows()" cdkFocusInitial>{{"add" | translate}}</button>
+  <button mat-flat-button class="returnButton" (click)="closeDialog()">{{"cancel" | translate}}</button>
+  <button mat-flat-button class="saveButton" (click)="getAllSelectedRows()" cdkFocusInitial>{{"add" | translate}}</button>
 </div>
+

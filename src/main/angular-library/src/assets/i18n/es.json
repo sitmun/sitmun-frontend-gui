@@ -2,8 +2,12 @@
 	"Search":"Buscar",
 	"Remove":"Eliminar",
 	"New":"Nuevo",
+	"requiredFieldMessage": "Rellene todos los campos obligatorios",
+	"caution": "Peligro",
+	"atention": "Atención",
    "true":"Si",
    "false":"No",
+   "duplicateMessage": "Si dupliques los datos sin guardar los cambios, las modificacions se sobreescribiran, quieres continuar?",
     "application":{"name":"Administración - Diputación Barcelona"},
    "mat-paginator-intl":{
     	"first_page":"Primera página",

@@ -4,12 +4,13 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-dialog-message',
   templateUrl: './dialog-message.component.html',
-  styleUrls: ['./dialog-message.component.css']
+  styleUrls: ['./dialog-message.component.scss']
 })
 export class DialogMessageComponent implements OnInit {
 
   title: string;
   message: string;
+  hideCancelButton : boolean=false;
 
   constructor(private dialogRef: MatDialogRef<DialogMessageComponent>){ }
 

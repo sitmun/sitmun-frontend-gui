@@ -2,8 +2,12 @@
    "Search":"Search",
    "Remove":"Remove",
    "New":"New",
+   "requiredFieldMessage": "You must fill all required fields",
+   "caution": "Caution",
+   "atention": "Atention",
    "true":"Yes",
    "false":"No",
+   "duplicateMessage": "If you duplicate rows without apply changes your modifications will be overwritted, do you want to continue?",
    "application":{"name":"Management - Diputació Barcelona"},
    "mat-paginator-intl":{
     	"first_page":"First page",
