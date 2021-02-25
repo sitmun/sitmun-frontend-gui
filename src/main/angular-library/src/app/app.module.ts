@@ -42,7 +42,7 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AppComponent,
-        HomeComponent
+        HomeComponent,
     ],
     imports: [
         BrowserModule,

@@ -71,6 +71,11 @@ input {
   justify-self: right !important;
   float: inherit !important;
 }
+.deleteButton:disabled {
+  background-color: inherit !important;
+  border: rgba(0, 0, 0, 0.26) solid 1px !important;
+  color: rgba(0, 0, 0, 0.26) solid 1px !important;
+}
 
 .returnButton,
 .actionButton {
@@ -147,4 +152,11 @@ input {
       line-height: 22px;
     }
   }
+}
+
+.toogleButton{
+  height: 40px;
+  margin-right: 10px;
+  vertical-align: bottom;
+  align-items: center;
 }

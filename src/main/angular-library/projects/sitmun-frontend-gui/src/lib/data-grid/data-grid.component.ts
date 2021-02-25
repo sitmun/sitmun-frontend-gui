@@ -1,5 +1,5 @@
 import { AgGridModule } from '@ag-grid-community/angular';
-import { Component, OnInit, NgModule, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, NgModule, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -22,21 +22,21 @@ import { DialogMessageComponent } from '../dialog-message/dialog-message.compone
 })
 export class DataGridComponent implements OnInit {
 
-  private _eventRefreshSubscription: any;
-  private _eventGetSelectedRowsSubscription: any;
-  private _eventGetAllRowsSubscription: any;
-  private _eventSaveAgGridStateSubscription: any;
+  _eventRefreshSubscription: any;
+  _eventGetSelectedRowsSubscription: any;
+  _eventGetAllRowsSubscription: any;
+  _eventSaveAgGridStateSubscription: any;
   modules: Module[] = AllCommunityModules;
 
 
   UndeRedoActions
   searchValue: string;
-  private gridApi;
-  private gridColumnApi;
+  gridApi: any;
+  gridColumnApi: any;
   statusColumn = false;
   changesMap: Map<number, Map<string, number>> = new Map<number, Map<string, number>>();
   // We will save the id of edited cells and the number of editions done.
-  private params; // Last parameters of the grid (in case we do apply changes we will need it) 
+  params: any; // Last parameters of the grid (in case we do apply changes we will need it) 
   rowData: any[];
   changeCounter: number; // Number of editions done above any cell 
   previousChangeCounter: number; // Number of ditions done after the last modification(changeCounter)
@@ -44,6 +44,7 @@ export class DataGridComponent implements OnInit {
   modificationChange = false;
   undoNoChanges = false; // Boolean that indicates if an undo hasn't modifications
   gridOptions;
+  someStatusHasChangedToDelete = false;
 
 
   @Input() eventRefreshSubscription: Observable<boolean>;
@@ -65,6 +66,7 @@ export class DataGridComponent implements OnInit {
   @Input() actionButton: boolean;
   @Input() addButton: boolean;
   @Input() globalSearch: boolean;
+  @Input() changeHeightButton: boolean;
   @Input() themeGrid: any;
   @Input() singleSelection: boolean;
   @Input() nonEditable: boolean;
@@ -85,7 +87,8 @@ export class DataGridComponent implements OnInit {
 
 
   constructor(public dialog: MatDialog,
-    public translate: TranslateService,) {
+    public translate: TranslateService,
+    private elRef: ElementRef) {
     this.translate = translate;
 
     this.frameworkComponents = {
@@ -152,6 +155,7 @@ export class DataGridComponent implements OnInit {
     if (this.eventRefreshSubscription) {
       this._eventRefreshSubscription = this.eventRefreshSubscription.subscribe(() => {
         this.changesMap.clear();
+        this.someStatusHasChangedToDelete=false;
         this.changeCounter = 0;
         this.previousChangeCounter = 0;
         this.redoCounter = 0;
@@ -216,11 +220,20 @@ export class DataGridComponent implements OnInit {
         this.statusColumn = true;
       }
     }
-    if(this.defaultColumnSorting){
+    if (this.defaultColumnSorting) {
       const sortModel = [
-        {colId: this.defaultColumnSorting, sort: 'asc'}
-    ];
-    this.gridApi.setSortModel(sortModel);
+        { colId: this.defaultColumnSorting, sort: 'asc' }
+      ];
+      this.gridApi.setSortModel(sortModel);
+    }
+  }
+
+
+  areRowsSelected(): Boolean {
+    if (this.gridApi != null && this.gridApi.getSelectedNodes().length > 0) {
+      return true
+    } else {
+      return false
     }
   }
 
@@ -294,10 +307,32 @@ export class DataGridComponent implements OnInit {
       .subscribe((items) => {
         this.rowData = items;
         this.gridApi.setRowData(this.rowData);
-        this.gridApi.sizeColumnsToFit()
+        this.setSize()
+        // this.gridApi.sizeColumnsToFit()
         console.log(this.rowData);
 
       });
+  }
+
+  setSize() {
+
+    var allColumnIds = [];
+    let columns = this.gridOptions.columnApi.getAllColumns();
+    columns.forEach(function (column) {
+      allColumnIds.push(column.colId);
+    });
+
+    this.gridOptions.columnApi.autoSizeColumns(allColumnIds);
+
+    let grid = this.gridOptions.api
+    let availableWidth = grid.gridPanel.eBodyViewport.clientWidth;
+
+    let usedWidth = grid.gridPanel.columnController.getWidthOfColsInList(columns);
+
+    if (usedWidth < availableWidth) {
+      grid.sizeColumnsToFit();
+    }
+
   }
 
   addItems(newItems: any[]): void {
@@ -308,7 +343,7 @@ export class DataGridComponent implements OnInit {
 
       if (item.id == undefined || (this.rowData.find(element => element.id === item.id)) == undefined) {
         if (this.statusColumn) {
-          item.status = 'Pending creation'
+          item.status = 'pendingCreation'
         }
         itemsToAdd.push(item);
         this.rowData.push(item);
@@ -324,7 +359,19 @@ export class DataGridComponent implements OnInit {
   }
 
 
-
+  changeHeight(value) {
+    let pixels = "";
+    if (value === '5') {
+      pixels = "200px"
+    } else if (value === '10') {
+      pixels = "315px"
+    } else if (value === '20') {
+      pixels = "630px"
+    } else {
+      pixels = "1550px"
+    }
+    this.elRef.nativeElement.parentElement.style.height = pixels;
+  }
 
   removeData(): void {
     this.gridApi.stopEditing(false);
@@ -334,9 +381,9 @@ export class DataGridComponent implements OnInit {
 
     if (this.statusColumn) {
       const selectedRows = selectedNodes.map(node => node.id);
-
+      if(selectedRows.length>0) {this.someStatusHasChangedToDelete=true;}
       for (const id of selectedRows) {
-        this.gridApi.getRowNode(id).data.status = 'Deleted';
+        this.gridApi.getRowNode(id).data.status = 'pendingDelete';
       }
       this.gridOptions.api.refreshCells();
     }
@@ -390,6 +437,7 @@ export class DataGridComponent implements OnInit {
     this.changeCounter = 0;
     this.previousChangeCounter = 0;
     this.redoCounter = 0;
+    this.someStatusHasChangedToDelete=false;
     this.params.colDef.cellStyle = { backgroundColor: '#FFFFFF' };
     this.gridApi.redrawRows();
   }
@@ -407,6 +455,15 @@ export class DataGridComponent implements OnInit {
     //this.previousChangeCounter = 0;
     this.redoCounter = 0;
 
+    if(this.statusColumn)
+    {
+      this.gridApi.forEachNode(function(node) { 
+        if(node.data.status === 'pendingModify' || node.data.status === 'pendingDelete') {node.data.status=''}
+        console.log(node)
+    });
+    this.gridApi.refreshCells();
+    this.someStatusHasChangedToDelete=false;
+    }
 
     //this.params.colDef.cellStyle =  {backgroundColor: '#FFFFFF'};
     //this.gridApi.redrawRows();
@@ -458,8 +515,8 @@ export class DataGridComponent implements OnInit {
           addMap.set(params.colDef.field, 1)
           this.changesMap.set(params.node.id, addMap);
           if (this.statusColumn) {
-            if (this.gridApi.getRowNode(params.node.id).data.status !== 'Pending creation') {
-              this.gridApi.getRowNode(params.node.id).data.status = 'Modified'
+            if (this.gridApi.getRowNode(params.node.id).data.status !== 'pendingCreation') {
+              this.gridApi.getRowNode(params.node.id).data.status = 'pendingModify'
             }
           }
         }
@@ -492,7 +549,7 @@ export class DataGridComponent implements OnInit {
           this.changesMap.delete(params.node.id);
           const row = this.gridApi.getDisplayedRowAtIndex(params.rowIndex);
           if (this.statusColumn) {
-            if (this.gridApi.getRowNode(params.node.id).data.status !== 'Pending creation') {
+            if (this.gridApi.getRowNode(params.node.id).data.status !== 'pendingCreation') {
               this.gridApi.getRowNode(params.node.id).data.status = ''
             }
           };

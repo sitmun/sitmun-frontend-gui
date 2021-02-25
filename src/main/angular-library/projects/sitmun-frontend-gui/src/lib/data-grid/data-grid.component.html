@@ -1,19 +1,19 @@
 <div id=grup1 class="editDivBtns">
     <span *ngIf="title" [translate]="title"> </span>
     <button type="button" title="{{ 'cancel' | translate }}" mat-mini-fab class="mini-fab mat-red" *ngIf="discardChangesButton"
-        id="deleteChangesButton" type="button" (click)="deleteChanges()" [disabled]="changeCounter <= 0">
+        id="deleteChangesButton" type="button" (click)="deleteChanges()" [disabled]="changeCounter <= 0 && !someStatusHasChangedToDelete">
         <mat-icon fontSet="material-icons-round"> close </mat-icon>
     </button>
-    <button type="button" title="{{ 'undo' | translate }}" mat-mini-fab class="mini-fab mat-orange" *ngIf="undoButton" id="undo"
-        (click)="undo()" [disabled]="changeCounter <= 0">
+    <button type="button" title="{{ 'undo' | translate }}" mat-mini-fab class="mini-fab mat-orange" *ngIf="undoButton"
+        id="undo" (click)="undo()" [disabled]="changeCounter <= 0">
         <mat-icon fontSet="material-icons-round"> undo </mat-icon>
     </button>
-    <button type="button" title="{{ 'redo' | translate }}" mat-mini-fab class="mini-fab mat-orange" *ngIf="redoButton" id="redo"
-        (click)="redo()" [disabled]="redoCounter <= 0">
+    <button type="button" title="{{ 'redo' | translate }}" mat-mini-fab class="mini-fab mat-orange" *ngIf="redoButton"
+        id="redo" (click)="redo()" [disabled]="redoCounter <= 0">
         <mat-icon fontSet="material-icons-round"> redo </mat-icon>
     </button>
-    <button type="button" title="{{ 'accept' | translate }}" mat-mini-fab class="mini-fab mat-green" *ngIf="applyChangesButton"
-        id="applyChangesButton" (click)="applyChanges()" [disabled]="changeCounter <= 0">
+    <button type="button" title="{{ 'accept' | translate }}" mat-mini-fab class="mini-fab mat-green"
+        *ngIf="applyChangesButton" id="applyChangesButton" (click)="applyChanges()" [disabled]="changeCounter <= 0">
         <mat-icon fontSet="material-icons-round"> check </mat-icon>
     </button>
 </div>
@@ -22,20 +22,31 @@
     <label *ngIf="globalSearch" [translate]="'search'"> </label>
     <input *ngIf="globalSearch" type="text" class="searchGenericInput" placeholder="" (keyup)="quickSearch()"
         [(ngModel)]="searchValue" ml-2>
-    <button type="button" *ngIf="deleteButton" mat-flat-button id="deleteButton" class="deleteButton" (click)="removeData()">
+    <label *ngIf="changeHeightButton" [translate]="'rowsToShow'"> </label>
+    <mat-button-toggle-group *ngIf="changeHeightButton" class="toogleButton" name="fontStyle" aria-label="Font Style"  value="5">
+        <mat-button-toggle value="5" (change)="changeHeight($event.value)">5</mat-button-toggle>
+        <mat-button-toggle value="20" (change)="changeHeight($event.value)">20</mat-button-toggle>
+        <mat-button-toggle value="50" (change)="changeHeight($event.value)">50</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <button type="button" *ngIf="deleteButton" mat-flat-button id="deleteButton" class="deleteButton"
+        (click)="removeData()" [disabled]="!areRowsSelected()">
         <mat-icon fontSet="material-icons-round"> delete </mat-icon>
         <span [translate]="'remove'"> </span>
 
     </button>
-    <button type="button" *ngIf="actionButton" mat-flat-button [matMenuTriggerFor]="menu" id="actionButton" class="actionButton">
+    <button type="button" *ngIf="actionButton" mat-flat-button [matMenuTriggerFor]="menu" id="actionButton"
+        class="actionButton">
         <span [translate]="'actions'"> </span>
         <mat-icon fontSet="material-icons-round"> keyboard_arrow_down </mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-        <button type="button" mat-menu-item *ngIf="!hideExportButton" (click)="exportData()"> {{"export" | translate}} </button>
-        <button type="button" mat-menu-item *ngIf="!hideDuplicateButton" (click)="onDuplicateButtonClicked()"> {{"duplicate" |
+        <button type="button" mat-menu-item *ngIf="!hideExportButton" (click)="exportData()"> {{"export" | translate}}
+        </button>
+        <button type="button" mat-menu-item *ngIf="!hideDuplicateButton" (click)="onDuplicateButtonClicked()">
+            {{"duplicate" |
             translate}}</button>
-        <button type="button" mat-menu-item *ngIf="!hideSearchReplaceButton"> {{"search/replace" | translate}}</button>
+        <button type="button" mat-menu-item *ngIf="!hideSearchReplaceButton && false"> {{"search/replace" | translate}}</button>
     </mat-menu>
 
     <button type="button" *ngIf="newButton" mat-flat-button class="newButton" (click)="newData()">
@@ -48,8 +59,6 @@
     </button>
 
 </div>
-
-
 
 <div class="row" style=" height: 100%">
     <div id="myGrid" style=" width:100%; height: 100%">

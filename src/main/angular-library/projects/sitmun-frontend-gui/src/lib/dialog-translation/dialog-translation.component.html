@@ -1,0 +1,43 @@
+
+
+<form [formGroup]='translationForm' #f="ngForm">
+
+
+        <div class="displayInline">
+            <label class="formLabelDialog">
+                {{'value' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+            <input matInput type="text" formControlName="catalanValue" required>
+            </mat-form-field>
+        </div>
+
+        <div class="displayInline">
+            <label class="formLabelDialog">
+                {{'value' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+            <input matInput type="text" formControlName="spanishValue">
+            </mat-form-field>
+        </div>
+
+
+
+        <div class="displayInline">
+            <label class="formLabelDialog">
+                {{'value' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+            <input matInput type="text" formControlName="englishValue">
+            </mat-form-field>
+        </div>
+
+
+  </form>
+
+<div>
+    <div mat-dialog-actions >
+        <button  mat-flat-button class="returnButton" (click)="closeDialog()">{{"cancel" | translate}}</button>
+        <button  mat-flat-button class="saveButton"  (click)="doAccept()" cdkFocusInitial>{{"accept" | translate}}</button>
+    </div>
+</div>
