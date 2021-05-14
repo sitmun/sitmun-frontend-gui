@@ -31,6 +31,7 @@ import { DialogFormComponent } from './dialog-form/dialog-form.component';
 import { DialogMessageComponent } from './dialog-message/dialog-message.component';
 import { DataTreeComponent } from './data-tree/data-tree.component';
 import { DialogTranslationComponent } from './dialog-translation/dialog-translation.component';
+import { DatagraphComponent } from './data-graph/datagraph.component';
 
 
 registerLocaleData(localeCa, 'ca');
@@ -74,7 +75,8 @@ export function createTranslateLoader(http: HttpClient) {
     DialogGridComponent,
     DialogFormComponent,
     DialogMessageComponent,
-    DialogTranslationComponent
+    DialogTranslationComponent,
+    DatagraphComponent
   ],
   entryComponents: [
   ],
@@ -94,6 +96,7 @@ export function createTranslateLoader(http: HttpClient) {
     DialogFormComponent,
     DialogMessageComponent,
     DialogTranslationComponent,
+    DatagraphComponent,
     SitmunFrontendCoreModule
   ]
 })

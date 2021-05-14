@@ -21,6 +21,8 @@ export class DialogGridComponent implements OnInit {
   private _addButtonClickedSubscription: any;
   tablesReceivedCounter: number;
   allRowsReceived: Array<any[]> = [];
+  changeHeightButton : boolean;
+  heightByDefault : any;
 
   //Inputs
   themeGrid: any;

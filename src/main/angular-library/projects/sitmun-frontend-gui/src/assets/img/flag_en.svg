@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <g id="flag_en" transform="translate(-1189 -89)">
+    <rect id="Rectángulo_628" data-name="Rectángulo 628" width="16" height="16" transform="translate(1189 89)" fill="none" opacity="0"/>
+    <g id="Grupo_642" data-name="Grupo 642" transform="translate(465.916 -383)">
+      <path id="Icon_material-flag" data-name="Icon material-flag" d="M725.084,473v13.637h1.6v-5.615l10.436.081V473Z" fill="#4f4f4f"/>
+      <path id="Trazado_1096" data-name="Trazado 1096" d="M726.666,473v8.12H737.12V473Z" fill="#2d3769"/>
+      <g id="Grupo_641" data-name="Grupo 641">
+        <path id="path4589" d="M726.666,473.626v.885l4.422,2.549-4.422,2.549v.884l5.2-3.017,5.2,3.017v-.884l-4.422-2.549,4.422-2.549v-.885l-5.2,2.966Z" fill="#c52531"/>
+        <path id="path4587" d="M731.005,473v3.175h-4.339v1.769h4.339v3.176h1.829v-3.176h4.286v-1.769h-4.338V473h-1.777Z" fill="#c52531"/>
+        <path id="rect4572" d="M730.8,473v2.811l-4.13-2.393v.417l3.816,2.184h-.889l-2.927-1.716v.416l2.248,1.3h-2.248v.364h4.495V473Zm1.829,0v3.331h4.495v-.364h-2.247l2.247-1.248V474.3l-2.927,1.664H733.3l3.815-2.184v-.365l-4.129,2.393V473Zm-1.464,4.788h-4.495v.364h2.248l-2.248,1.248v.417l2.927-1.665h.889l-3.816,2.185v.364l4.13-2.393v2.812h.365v-3.332Zm1.464-.1v3.434h.366v-2.812l4.129,2.393v-.416L733.3,478.1h.888l2.927,1.665v-.417l-2.247-1.3h2.247v-.364h-3.868Z" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <g id="flag_es" transform="translate(-1231 -92)">
+    <rect id="Rectángulo_626" data-name="Rectángulo 626" width="16" height="16" transform="translate(1231 92)" fill="none" opacity="0"/>
+    <g id="Grupo_640" data-name="Grupo 640" transform="translate(524.461 -379.818)">
+      <path id="Icon_material-flag" data-name="Icon material-flag" d="M708.519,473v13.637h1.6v-5.615l10.436.081V473Z" fill="#4f4f4f"/>
+      <g id="Grupo_639" data-name="Grupo 639">
+        <path id="Unión_4" data-name="Unión 4" d="M17452.119,396.343v-1.806h10.457v1.806Zm0-1.806v-.9h10.457v.9Z" transform="translate(-16742.02 82.069)" fill="#eab826" stroke="rgba(0,0,0,0)" stroke-miterlimit="10" stroke-width="1"/>
+        <path id="Unión_3" data-name="Unión 3" d="M17452.119,396.343v-.9h10.457v.9Zm0-.9v-.9h10.457v.9Zm0-.9v-.9h10.457v.9Z" transform="translate(-16742.02 84.776)" fill="#c52733" stroke="rgba(0,0,0,0)" stroke-miterlimit="10" stroke-width="1"/>
+        <path id="Unión_5" data-name="Unión 5" d="M17452.119,396.343v-.9h10.457v.9Zm0-.9v-1.8h10.457v1.8Z" transform="translate(-16742.02 79.363)" fill="#c52733" stroke="rgba(0,0,0,0)" stroke-miterlimit="10" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

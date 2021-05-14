@@ -1,3 +1,11 @@
+<button mat-flat-button type="button" (click)="treeControl.expandAll()" title="{{ 'expandAll' | translate }}"  type="button" >
+	<mat-icon fontSet="material-icons-round"> expand_more </mat-icon>
+	{{ "expandAll" | translate }}
+</button>
+<button mat-flat-button type="button" (click)="treeControl.collapseAll()" title="{{ 'expandAll' | translate }}"  type="button" >
+	<mat-icon fontSet="material-icons-round"> expand_less </mat-icon>
+	{{ "collapseAll" | translate }}
+</button>
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" >
 	<mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding  draggable="true"
 	(dragstart)="handleDragStart($event, node);" 	(dragover)="handleDragOver($event, node);"

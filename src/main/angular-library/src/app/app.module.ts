@@ -23,6 +23,7 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 
 
 
+
 registerLocaleData(localeCa, 'ca');
 registerLocaleData(localeEs, 'es');
 

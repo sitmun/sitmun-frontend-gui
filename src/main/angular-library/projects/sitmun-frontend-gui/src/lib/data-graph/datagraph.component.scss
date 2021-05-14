@@ -1,0 +1,85 @@
+.d3-chart {
+    width: 100%;
+    height: 400px;
+    margin: auto;
+    background-color: #bdb9b59d;
+  }
+  
+  .d3-chart .axis path,
+  .d3-chart .axis line {
+    stroke: #999;
+  }
+  
+.d3-chart .axis text {
+    fill: #999;
+}
+
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+div#layout {
+  text-align: center;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+}
+
+.bar {
+  fill: #be7d27;
+}
+
+text {
+  font-size: 8px !important;
+  fill: #fff;
+}
+
+path {
+  stroke: gray;
+}
+
+line {
+  stroke: gray;
+}
+
+line#limit {
+  stroke: #FED966;
+  stroke-width: 3;
+  stroke-dasharray: 3 6;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+.grid .tick line {
+  stroke: #9FAAAE;
+  stroke-opacity: 0.3;
+}
+
+text.divergence {
+  font-size: 12px;
+  fill: #2F4A6D;
+}
+
+.bars.value {
+  font-size: 8px  !important;
+  z-index: 132132132;
+}
+
+text.title {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+text.label {
+  font-size: 8px !important;
+  font-weight: 400;
+}
+
+text.source {
+  font-size: 8px !important;
+}

@@ -7,3 +7,17 @@
 .mat-dialog-actions {
     justify-content: flex-end;
 }
+
+.icon{
+    height: 50px !important;
+    width: 40px  !important;
+    margin-left: 30px;
+}
+
+.formLabelDialog {
+    width: 10% !important;
+  }
+
+  .mat-dialog-container{
+    height: max-content !important;
+  }
