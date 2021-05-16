@@ -30,6 +30,7 @@ export class DialogGridComponent implements OnInit {
   columnDefsTable: Array<any[]>;
   singleSelectionTable: Array<boolean>;
   titlesTable: Array<string>;
+  orderTable: Array<string> = [];
   addButtonClickedSubscription: Observable <boolean> ;
   nonEditable: boolean;
 
