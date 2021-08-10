@@ -57,6 +57,10 @@
         <mat-icon fontSet="material-icons-round"> add_circle_outline </mat-icon>
         <span [translate]="'add'"> </span>
     </button>
+    <button type="button" *ngIf="registerButton" mat-flat-button class="newButton" (click)="modifyStatusSelected()">
+        <mat-icon fontSet="material-icons-round"> add_circle_outline </mat-icon>
+        <span [translate]="'register'"> </span>
+    </button>
 
 </div>
 

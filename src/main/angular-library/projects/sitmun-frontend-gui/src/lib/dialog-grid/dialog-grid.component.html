@@ -3,7 +3,9 @@
   <div *ngFor="let getAll of getAllsTable; let i = index" class="appDialogDataGridDiv"  [ngStyle]="{'margin-top': i>0?'100px':'0px'}">
     <app-data-grid 
     [columnDefs]="columnDefsTable[i]" [themeGrid]='themeGrid' [changeHeightButton]='changeHeightButton' [defaultHeight]='heightByDefault'  [getAll]='getAll' [globalSearch]=true [singleSelection]="singleSelectionTable[i]"
-    [title]="titlesTable[i]" [defaultColumnSorting]='orderTable.length>=i?orderTable[i]:null' [nonEditable]='nonEditable' [eventGetSelectedRowsSubscription]="getAllRows.asObservable()" (getSelectedRows)='joinRowsReceived($event)' >
+    [title]="titlesTable[i]" [defaultColumnSorting]='orderTable.length>=i?orderTable[i]:null' [nonEditable]='nonEditable'
+     [eventGetSelectedRowsSubscription]="getAllRows.asObservable()" [addFieldRestriction]='addFieldRestriction.length>=i?addFieldRestriction[i]:null' 
+     [currentData]='currentData.length>=i?currentData[i]:null' [fieldRestrictionWithDifferentName]='fieldRestrictionWithDifferentName.length>=i?fieldRestrictionWithDifferentName[i]:null' (getSelectedRows)='joinRowsReceived($event)' >
     </app-data-grid>
   </div>
 </mat-dialog-content>

@@ -64,11 +64,11 @@ export class FileDatabase {
 
   }
 
-  initialize(dataObj) {
+  initialize(dataObj, allNewElements) {
 
     // Build the tree nodes from Json object. The result is a list of `FileNode` with nested
     //     file node as children.
-    const data = this.buildFileTree(dataObj, 0);
+    const data = this.buildFileTree(dataObj, 0, allNewElements);
 
     // Notify the change.
     this.dataChange.next(data);
@@ -78,7 +78,7 @@ export class FileDatabase {
    * Build the file structure tree. The `value` is the Json object, or a sub-tree of a Json object.
    * The return value is the list of `FileNode`.
    */
-  buildFileTree(arrayTreeNodes: any[], level: number): any {
+  buildFileTree(arrayTreeNodes: any[], level: number, allNewElements: any) {
     var map = {};
     if(arrayTreeNodes.length===0)
     {
@@ -98,6 +98,11 @@ export class FileDatabase {
         var obj = treeNode;
         obj.children = [];
         obj.type= (treeNode.isFolder)? "folder" : "node";
+        if(allNewElements) {
+          obj.status='pendingCreation';
+          if(obj.id) { obj.id = obj.id * -1 }
+          if(obj.parent) { obj.parent = obj.parent * -1 }
+        }
   
         if(!map[obj.id]) {map[obj.id] = obj;}
         else{
@@ -308,6 +313,7 @@ export class DataTreeComponent {
   treeData: any;
 
   @Input() getAll: () => Observable<any>;
+  @Input() allNewElements: any;
 
 
   /* Drag and drop */
@@ -376,7 +382,7 @@ export class DataTreeComponent {
     this.getAll()
     .subscribe((items) => {
       this.treeData = items;
-      this.database.initialize(this.treeData);
+      this.database.initialize(this.treeData, this.allNewElements);
       this.database.dataChange.subscribe(data => this.rebuildTreeForData([data]));
     });
   }
@@ -542,8 +548,10 @@ export class DataTreeComponent {
     this.dataSource.data = [];
     this.dataSource.data = data;
     this.treeControl.expansionModel.selected.forEach((nodeAct) => {
-      const node = this.treeControl.dataNodes.find((n) => n.id === nodeAct.id);
-      this.treeControl.expand(node);
+      if(nodeAct){
+        const node = this.treeControl.dataNodes.find((n) => n.id === nodeAct.id);
+        this.treeControl.expand(node);
+      }
     });
   }
 

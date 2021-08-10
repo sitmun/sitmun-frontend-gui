@@ -23,8 +23,15 @@ export class AppComponent implements OnInit {
   /** Component constructor*/
   constructor(/** Translate service */public trans: TranslateService, /** Identity service */public principal:Principal,/** Login service */public loginService:LoginService  ) {
   	this.translate = trans;
- 	this.translate.addLangs(['es', 'ca']);
-    this.translate.setDefaultLang('ca');
+ 	  this.translate.addLangs(['es', 'ca', 'en']);
+    if(localStorage.getItem('lang')){
+      this.translate.setDefaultLang(localStorage.getItem('lang'))
+      this.translate.use(localStorage.getItem('lang'));
+    }
+    else{
+      this.translate.setDefaultLang('en')
+      this.translate.use('en');
+    }
 
     //const browserLang = translate.getBrowserLang();
     //translate.use(browserLang.match(/es|ca/) ? browserLang : 'ca');

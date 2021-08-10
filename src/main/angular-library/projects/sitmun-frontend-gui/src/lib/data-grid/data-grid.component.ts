@@ -26,6 +26,7 @@ export class DataGridComponent implements OnInit {
   _eventGetSelectedRowsSubscription: any;
   _eventGetAllRowsSubscription: any;
   _eventSaveAgGridStateSubscription: any;
+  _eventModifyStatusOfSelectedCells: any;
   modules: Module[] = AllCommunityModules;
 
 
@@ -50,8 +51,9 @@ export class DataGridComponent implements OnInit {
 
   @Input() eventRefreshSubscription: Observable<boolean>;
   @Input() eventGetSelectedRowsSubscription: Observable<boolean>;
-  @Input() eventGetAllRowsSubscription: Observable<boolean>;
+  @Input() eventGetAllRowsSubscription: Observable<string>;
   @Input() eventSaveAgGridStateSubscription: Observable<boolean>;
+  @Input() eventModifyStatusOfSelectedCells: Observable<string>;
   @Input() eventAddItemsSubscription: Observable<boolean>;
   @Input() frameworkComponents: any;
   @Input() components: any;
@@ -68,6 +70,8 @@ export class DataGridComponent implements OnInit {
   @Input() newButton: boolean;
   @Input() actionButton: boolean;
   @Input() addButton: boolean;
+  @Input() registerButton: boolean;
+  @Input() newStatusRegister: string;
   @Input() globalSearch: boolean;
   @Input() changeHeightButton: boolean;
   @Input() defaultHeight: any;
@@ -79,16 +83,19 @@ export class DataGridComponent implements OnInit {
   @Input() hideDuplicateButton: boolean;
   @Input() hideSearchReplaceButton: boolean;
   @Input() addFieldRestriction: any;
+  @Input() allNewElements: any;
+  @Input() currentData: Array<any> = null;
+  @Input() fieldRestrictionWithDifferentName: string;
 
 
   @Output() remove: EventEmitter<any[]>;
   @Output() new: EventEmitter<number>;
-  @Output() add: EventEmitter<number>;
+  @Output() add: EventEmitter<any[]>;
   @Output() discardChanges: EventEmitter<any[]>;
   @Output() sendChanges: EventEmitter<any[]>;
   @Output() duplicate: EventEmitter<any[]>;
   @Output() getSelectedRows: EventEmitter<any[]>;
-  @Output() getAllRows: EventEmitter<any[]>;
+  @Output() getAllRows: EventEmitter<{data: any[], event:string}>;
   @Output() getAgGridState: EventEmitter<any[]>;
   @Output() gridModified: EventEmitter<boolean>;
 
@@ -175,14 +182,20 @@ export class DataGridComponent implements OnInit {
       });
     }
     if (this.eventGetAllRowsSubscription) {
-      this._eventGetAllRowsSubscription = this.eventGetAllRowsSubscription.subscribe(() => {
-        this.emitAllRows();
+      this._eventGetAllRowsSubscription = this.eventGetAllRowsSubscription.subscribe((event: string) => {
+        this.emitAllRows(event);
       });
     }
 
     if (this.eventSaveAgGridStateSubscription) {
       this._eventSaveAgGridStateSubscription = this.eventSaveAgGridStateSubscription.subscribe(() => {
         this.saveAgGridState();
+      });
+    }
+
+    if (this.eventModifyStatusOfSelectedCells) {
+      this._eventModifyStatusOfSelectedCells = this.eventModifyStatusOfSelectedCells.subscribe((status: string) => {
+        this.modifyStatusSelected(status);
       });
     }
 
@@ -227,10 +240,21 @@ export class DataGridComponent implements OnInit {
     this.getElements();
     console.log(this.columnDefs);
     if (this.defaultColumnSorting) {
-      const sortModel = [
-        { colId: this.defaultColumnSorting, sort: 'asc' }
-      ];
-      this.gridApi.setSortModel(sortModel);
+      if(!Array.isArray(this.defaultColumnSorting))
+      {
+        const sortModel = [
+          { colId: this.defaultColumnSorting, sort: 'asc' }
+        ];
+        this.gridApi.setSortModel(sortModel);
+      }
+      else{
+        let sortModel = [];
+        this.defaultColumnSorting.forEach(element => {
+          sortModel.push({ colId: element, sort: 'asc' })
+        });
+        this.gridApi.setSortModel(sortModel);
+      }
+
     }
     if(this.defaultHeight != null && this.defaultHeight != undefined){
       this.changeHeight(this.defaultHeight)
@@ -280,10 +304,26 @@ export class DataGridComponent implements OnInit {
     this.getSelectedRows.emit(selectedData);
   }
 
-  emitAllRows(): void {
+  emitAllRows(event: string): void {
+    // let rowData = [];
+    // this.gridApi.forEachNode(node => rowData.push(node.data));
+    this.getAllRows.emit({data: this.getAllCurrentData(), event: event});
+  }
+
+  private getAllCurrentData(): Array<any>{
     let rowData = [];
     this.gridApi.forEachNode(node => rowData.push(node.data));
-    this.getAllRows.emit(rowData);
+    return rowData;
+  }
+
+  modifyStatusSelected(status?: string): void{
+    let newStatus=status?status:this.newStatusRegister;
+    const selectedNodes = this.gridApi.getSelectedNodes();
+    selectedNodes.map(node => {
+      node.data.status=newStatus;
+      node.selected=false;
+    } );
+    this.gridApi.redrawRows();
   }
 
   saveAgGridState(): void {
@@ -341,12 +381,34 @@ export class DataGridComponent implements OnInit {
   getElements(): void {
     this.getAll()
       .subscribe((items) => {
-        if(this.statusColumn){
-          items.forEach(element => {
-            element.status='statusOK'
-          });
-        }
-        this.rowData = items;
+        let status = this.allNewElements?'pendingCreation':'statusOK'
+        let newItems = [];
+        let condition = (this.addFieldRestriction)? this.addFieldRestriction: 'id';
+        items.forEach(element => {
+          if(this.statusColumn){
+            if(element.status != "notAvailable" && element.status != "pendingCreation" && element.status != "pendingRegistration" && element.status != "unregisteredLayer"){
+              element.status=status
+            }
+            if(this.allNewElements) { element.new = true; }
+          }
+          if(this.currentData){
+            if (this.checkElementAllowedToAdd(condition,element, this.currentData)) {
+                newItems.push(element);
+            }
+          }
+          
+        });
+
+        // if(this.statusColumn){
+        //   let status = this.allNewElements?'pendingCreation':'statusOK'
+        //   items.forEach(element => {
+        //     if(element.status != "notAvailable" && element.status != "pendingCreation" && element.status != "pendingRegistration" && element.status != "unregisteredLayer"){
+        //       element.status=status
+        //     }
+        //     if(this.allNewElements) { element.new = true; }
+        //   });
+        // }
+        this.rowData = this.currentData?newItems: items;
         this.gridApi.setRowData(this.rowData);
         this.setSize()
         // this.gridApi.sizeColumnsToFit()
@@ -380,10 +442,11 @@ export class DataGridComponent implements OnInit {
     console.log(newItems);
     let itemsToAdd: Array<any> = [];
     let condition = (this.addFieldRestriction)? this.addFieldRestriction: 'id';
+    
 
     newItems.forEach(item => {
 
-      if (item[condition] == undefined || (this.rowData.find(element => element[condition] == item[condition])) == undefined) {
+      if (this.checkElementAllowedToAdd(condition,item, this.rowData)) {
         if (this.statusColumn) {
           item.status = 'pendingCreation'
           item.newItem = true;
@@ -392,13 +455,45 @@ export class DataGridComponent implements OnInit {
         this.rowData.push(item);
       }
       else {
-        console.log(`Item with the ${condition} ${item[condition]} already exists`)
+        console.log(`Item already exists`)
       }
     });
     this.gridApi.updateRowData({ add: itemsToAdd });
 
     console.log(this.columnDefs);
     // params.oldValue!=undefined
+  }
+
+  private checkElementAllowedToAdd(condition, item, data){
+
+    let finalAddition = true;
+
+    if(Array.isArray(condition)){
+
+      for(let element of data){
+        let canAdd = false;
+
+        for(let currentCondition of condition){
+          if(element[currentCondition] != item[currentCondition]){
+            canAdd = true;
+            break;
+          }
+        }
+        if(!canAdd) {
+           finalAddition = false;
+           break;
+          }
+      }
+      return finalAddition;
+
+    }
+    else{
+      if(this.fieldRestrictionWithDifferentName){
+        return (item[condition] == undefined || (data.find(element => element[this.fieldRestrictionWithDifferentName] == item[condition])) == undefined)
+      }
+      return (item[condition] == undefined || (data.find(element => element[condition] == item[condition])) == undefined)
+    }
+
   }
 
 
@@ -440,7 +535,7 @@ export class DataGridComponent implements OnInit {
 
   onAddButtonClicked(): void {
     this.gridApi.stopEditing(false);
-    this.add.emit(-1);
+    this.add.emit(this.getAllCurrentData());
   }
 
   onDuplicateButtonClicked(): void {
@@ -464,6 +559,8 @@ export class DataGridComponent implements OnInit {
       const selectedNodes = this.gridApi.getSelectedNodes();
       const selectedData = selectedNodes.map(node => node.data);
       this.duplicate.emit(selectedData);
+      this.gridOptions.api.deselectAll();
+
     }
   }
 
@@ -489,6 +586,7 @@ export class DataGridComponent implements OnInit {
 
   deleteChanges(): void {
     this.gridApi.stopEditing(false);
+    let newElementsActived= this.allNewElements;
 
     while (this.changeCounter > 0) {
       this.undo();
@@ -506,7 +604,7 @@ export class DataGridComponent implements OnInit {
           if(node.data.status === 'pendingDelete'){
             rowsWithStatusModified.push(node.data);
           }
-          if(node.data.newItem){
+          if(node.data.newItem || newElementsActived){
             node.data.status='pendingCreation'
           }
           else{
@@ -514,7 +612,6 @@ export class DataGridComponent implements OnInit {
           }
         }
         
-        console.log(node)
     });
     this.someStatusHasChangedToDelete=false;
     this.discardChanges.emit(rowsWithStatusModified);
@@ -575,9 +672,9 @@ export class DataGridComponent implements OnInit {
           addMap.set(params.colDef.field, 1)
           this.changesMap.set(params.node.id, addMap);
           if (this.statusColumn) {
-            if (this.gridApi.getRowNode(params.node.id).data.status !== 'pendingCreation') {
+            // if (this.gridApi.getRowNode(params.node.id).data.status !== 'pendingCreation') {
               this.gridApi.getRowNode(params.node.id).data.status = 'pendingModify'
-            }
+            // }
           }
         }
         else {

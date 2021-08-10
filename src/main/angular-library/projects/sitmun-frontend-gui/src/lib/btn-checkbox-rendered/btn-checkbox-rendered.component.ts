@@ -27,11 +27,16 @@ export class BtnCheckboxRenderedComponent implements ICellRendererAngularComp, O
   }
 
   btnCheckedHandler(event) {
-    let checked = !event.target.firstElementChild.checked;
-    let colId = this.params.column.colId;
-    this.params.value=checked;
-    this.params.api.undoRedoService.isFilling=true;
-    this.params.node.setDataValue(colId, checked);
+    if(this.params.colDef.editable){
+      let checked = !event.target.firstElementChild.checked;
+      let colId = this.params.column.colId;
+      this.params.value=checked;
+      this.params.api.undoRedoService.isFilling=true;
+      this.params.node.setDataValue(colId, checked);
+    }
+    else{
+      event.preventDefault();
+    }
 
     
   }
