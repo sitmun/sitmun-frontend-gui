@@ -1,5 +1,5 @@
 {
-  "name": "@sitmun/frontend-gui",
+  "name": "@sitmun/sitmun-frontend-gui",
   "version": "0.8.2",
   "repository": "git://github.com/sitmun/sitmun-frontend-gui.git",
   "peerDependencies": {
