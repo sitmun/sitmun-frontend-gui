@@ -51,7 +51,7 @@
     "@ag-grid-community/all-modules": "22.1.1",
     "@ag-grid-community/angular": "22.1.1",
     "@ag-grid-community/core": "22.1.1",
-    "@angular-devkit/build-angular": "~0.1001.7",
+    "@angular-devkit/build-angular": "~21.2.26",
     "@angular-devkit/build-ng-packagr": "^0.1002.0",
     "@angular/cli": "~10.1.7",
     "@angular/compiler-cli": "~10.1.6",
